@@ -15,10 +15,32 @@
           {{ layout.title }}
         </q-toolbar-title>
 
-        <div>
+        <q-btn-dropdown dropdown-icon="mdi-cog">
+          <q-list bordered padding>
+            <q-item-label header>{{ $t('customize') }}</q-item-label>
 
-          <q-toggle v-model="layout.darkMode" color="black" label="Dark Mode" left-label></q-toggle>
-        </div>
+            <q-item>
+              <q-item-section class="text-no-wrap">
+                <q-toggle v-model="layout.darkMode" color="black" :label="$t('darkMode')" left-label size="sm"></q-toggle>
+              </q-item-section>
+            </q-item>
+            <q-item>
+              <q-item-section class="text-no-wrap">
+                <LanguageSwitcher></LanguageSwitcher>
+              </q-item-section>
+            </q-item>
+          </q-list>
+          <!--  <div class="row no-wrap q-pa-md">
+             <div class="col text-no-wrap q-pr-xl"><q-toggle v-model="layout.darkMode" color="black" :label="$t('darkMode')" left-label size="sm"></q-toggle></div>
+           <div class="col q-pr-xs"><LanguageSwitcher></LanguageSwitcher></div>
+          </div>-->
+        </q-btn-dropdown>
+        <!--
+        <div class="row">
+
+           <div class="col text-no-wrap q-pr-xl"><q-toggle v-model="layout.darkMode" color="black" :label="$t('darkMode')" left-label size="sm"></q-toggle></div>
+           <div class="col q-pr-xs"><LanguageSwitcher></LanguageSwitcher></div>
+        </div> -->
       </q-toolbar>
     </q-header>
 
@@ -52,18 +74,18 @@ $q.dark.set('auto');
 import EssentialLink, {
   EssentialLinkProps,
 } from 'components/EssentialLink.vue';
+import LanguageSwitcher from 'components/LanguageSwitcher.vue';
 
 import { useLayoutStore } from '../stores/layout-store';
 const layout = useLayoutStore();
 
 watchEffect(() => {
   $q.dark.set(layout.darkMode);
-  if(layout.darkMode) {
-    setCssVar('primary', '	#383838', document.documentElement)
+  if (layout.darkMode) {
+    setCssVar('primary', '	#383838', document.documentElement);
   } else {
-    setCssVar('primary', '#33F', document.documentElement)
+    setCssVar('primary', '#33F', document.documentElement);
   }
-
 });
 
 const essentialLinks: EssentialLinkProps[] = [
