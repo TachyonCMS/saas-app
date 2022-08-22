@@ -30,30 +30,12 @@
               </q-item-section>
             </q-item>
           </q-list>
-          <!--  <div class="row no-wrap q-pa-md">
-             <div class="col text-no-wrap q-pr-xl"><q-toggle v-model="layout.darkMode" color="black" :label="$t('darkMode')" left-label size="sm"></q-toggle></div>
-           <div class="col q-pr-xs"><LanguageSwitcher></LanguageSwitcher></div>
-          </div>-->
         </q-btn-dropdown>
-        <!--
-        <div class="row">
-
-           <div class="col text-no-wrap q-pr-xl"><q-toggle v-model="layout.darkMode" color="black" :label="$t('darkMode')" left-label size="sm"></q-toggle></div>
-           <div class="col q-pr-xs"><LanguageSwitcher></LanguageSwitcher></div>
-        </div> -->
       </q-toolbar>
     </q-header>
 
     <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
-      <q-list>
-        <q-item-label header> Essential Links </q-item-label>
-
-        <EssentialLink
-          v-for="link in essentialLinks"
-          :key="link.title"
-          v-bind="link"
-        />
-      </q-list>
+      <MainDrawer></MainDrawer>
     </q-drawer>
 
     <q-page-container>
@@ -65,20 +47,16 @@
 <script setup lang="ts">
 import { ref, watchEffect } from 'vue';
 import { useQuasar, setCssVar } from 'quasar';
-const $q = useQuasar();
 
-// get status
-console.log($q.dark.isActive); // true, false
-$q.dark.set('auto');
-
-import EssentialLink, {
-  EssentialLinkProps,
-} from 'components/EssentialLink.vue';
-import LanguageSwitcher from 'components/LanguageSwitcher.vue';
-
+// Store info about the visitors layout
 import { useLayoutStore } from '../stores/layout-store';
 const layout = useLayoutStore();
 
+// Enable Quasar dark mode toggling
+const $q = useQuasar();
+console.log($q.dark.isActive); // true, false
+$q.dark.set('auto');
+// Update navbar in dark mode
 watchEffect(() => {
   $q.dark.set(layout.darkMode);
   if (layout.darkMode) {
@@ -88,53 +66,14 @@ watchEffect(() => {
   }
 });
 
-const essentialLinks: EssentialLinkProps[] = [
-  {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev',
-  },
-  {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework',
-  },
-  {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev',
-  },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev',
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev',
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev',
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev',
-  },
-];
+// Potential left drawer content
+import MainDrawer from './drawers/MainDrawer.vue';
 
+// Allow choosing an App UI language, content language may not be affected.
+import LanguageSwitcher from 'components/LanguageSwitcher.vue';
+
+// Mange left drawer state
 const leftDrawerOpen = ref(false);
-
 function toggleLeftDrawer() {
   leftDrawerOpen.value = !leftDrawerOpen.value;
 }
