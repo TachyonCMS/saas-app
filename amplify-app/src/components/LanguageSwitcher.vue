@@ -8,18 +8,25 @@
     emit-value
     map-options
     options-dense
-    :dark="layout.darkMode"
+    :dark="optionsStore.darkMode"
     input-style="color: white"
   />
 </template>
 
 <script  setup lang="ts">
+import { watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import { useLayoutStore } from '../stores/layout-store.js';
-const layout = useLayoutStore();
+import { useOptionsStore } from '../stores/options-store.js';
+const optionsStore = useOptionsStore();
 
 const { locale } = useI18n({ useScope: 'global' });
+locale.value = optionsStore.locale;
+
+watchEffect(() => {
+  console.log(locale)
+  optionsStore.setLocale(locale.value);
+});
 
 const localeOptions = [
   { value: 'en-US', label: 'English' },

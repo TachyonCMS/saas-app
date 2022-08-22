@@ -12,7 +12,7 @@
         />
 
         <q-toolbar-title>
-          {{ layout.title }}
+          {{ layoutStore.title }}
         </q-toolbar-title>
 
         <q-btn-dropdown dropdown-icon="mdi-cog">
@@ -21,7 +21,13 @@
 
             <q-item>
               <q-item-section class="text-no-wrap">
-                <q-toggle v-model="layout.darkMode" color="black" :label="$t('darkMode')" left-label size="sm"></q-toggle>
+                <q-toggle
+                  v-model="optionsStore.darkMode"
+                  color="black"
+                  :label="$t('darkMode')"
+                  left-label
+                  size="sm"
+                ></q-toggle>
               </q-item-section>
             </q-item>
             <q-item>
@@ -48,9 +54,13 @@
 import { ref, watchEffect } from 'vue';
 import { useQuasar, setCssVar } from 'quasar';
 
-// Store info about the visitors layout
+// Store info about the layout
 import { useLayoutStore } from '../stores/layout-store';
-const layout = useLayoutStore();
+const layoutStore= useLayoutStore();
+
+// Store info about the visitors selected options
+import { useOptionsStore } from '../stores/options-store';
+const optionsStore = useOptionsStore();
 
 // Enable Quasar dark mode toggling
 const $q = useQuasar();
@@ -58,9 +68,9 @@ console.log($q.dark.isActive); // true, false
 $q.dark.set('auto');
 // Update navbar in dark mode
 watchEffect(() => {
-  $q.dark.set(layout.darkMode);
-  if (layout.darkMode) {
-    setCssVar('primary', '	#383838', document.documentElement);
+  $q.dark.set(optionsStore.darkMode);
+  if (optionsStore.darkMode) {
+    setCssVar('primary', '#383838', document.documentElement);
   } else {
     setCssVar('primary', '#33F', document.documentElement);
   }
