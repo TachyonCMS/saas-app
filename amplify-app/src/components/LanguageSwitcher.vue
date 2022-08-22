@@ -14,10 +14,9 @@
 </template>
 
 <script  setup lang="ts">
-
 import { useI18n } from 'vue-i18n';
 
-import { useLayoutStore } from "../stores/layout-store.js";
+import { useLayoutStore } from '../stores/layout-store.js';
 const layout = useLayoutStore();
 
 const { locale } = useI18n({ useScope: 'global' });
@@ -29,5 +28,4 @@ const localeOptions = [
 </script>
 
 <style>
-
 </style>

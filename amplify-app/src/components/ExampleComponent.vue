@@ -17,7 +17,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { Todo, Meta } from './models';
-import { useCounterStore } from "../stores/example-store.js";
+import { useCounterStore } from '../stores/example-store.js';
 
 interface Props {
   title: string;
@@ -38,5 +38,4 @@ function increment() {
 }
 
 const todoCount = computed(() => props.todos.length);
-
 </script>
