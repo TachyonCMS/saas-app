@@ -5,7 +5,9 @@ import messages from 'src/i18n';
 
 export default boot(({ app }) => {
   const i18n = createI18n({
+    legacy: false, // you must set `false`, to use Composition API
     locale: 'en-US',
+    fallbackLocale: 'en-US',
     globalInjection: true,
     messages,
   });

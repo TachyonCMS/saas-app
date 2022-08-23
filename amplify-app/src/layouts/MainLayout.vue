@@ -51,20 +51,37 @@
 </template>
 
 <script setup lang="ts">
+import messages from 'src/i18n';
+import { useI18n } from 'vue-i18n';
+
 import { ref, watchEffect } from 'vue';
 import { useQuasar, setCssVar } from 'quasar';
 
-// Store info about the layout
-import { useLayoutStore } from '../stores/layout-store';
-const layoutStore= useLayoutStore();
+// LAYOUT Store info about the layout
+import { useLayoutStore } from '../stores/layout';
+const layoutStore = useLayoutStore();
 
-// Store info about the visitors selected options
-import { useOptionsStore } from '../stores/options-store';
+// OPTION Store, info about the visitors selected options
+import { useOptionsStore } from '../stores/options';
 const optionsStore = useOptionsStore();
 
-// Enable Quasar dark mode toggling
+// LOCALIZATION
+const { locale } = useI18n({ useScope: 'global' });
+locale.value = optionsStore.locale;
+const { t } = useI18n({
+    legacy: false, // you must set `false`, to use Composition API
+    locale: optionsStore.locale,
+    fallbackLocale: 'en-US',
+    messages,
+  })
+
+// NOTIFICATIONS Store, info about the visitors selected options
+import { useNotificationsStore } from '../stores/notifications';
+const notificationsStore = useNotificationsStore();
+
+// DARK MODE - Enable Quasar dark mode toggling
 const $q = useQuasar();
-console.log($q.dark.isActive); // true, false
+
 $q.dark.set('auto');
 // Update navbar in dark mode
 watchEffect(() => {
@@ -76,15 +93,57 @@ watchEffect(() => {
   }
 });
 
-// Potential left drawer content
+const notifyTypeMap = {
+  error: {
+    qType: 'negative',
+    labelCode: 'error',
+  },
+  warning: {
+    qType: 'warning',
+    labelCode: 'warning',
+  },
+  info: {
+    qType: 'info',
+    labelCode: 'info',
+  },
+  positive: {
+    qType: 'positive',
+    labelCode: 'success',
+  }
+}
+
+watchEffect(() => {
+  console.log(notificationsStore.notifications);
+
+  notificationsStore.notifications.forEach((note) => {
+    console.log(note);
+    const msg = '<span class="text-h6">'+ t(notifyTypeMap[note.type].labelCode) +'</span><br />'+note.message;
+    $q.notify({
+      message: msg,
+      multiLine: true,
+      position: note.position,
+      type: notifyTypeMap[note.type].qType,
+      html: true,
+      actions: [
+        {
+          label: 'Close',
+          handler: () => {
+            notificationsStore.delete(note.id);
+          },
+        },
+      ],
+    });
+  });
+});
+
+// DRAWER - Potential left drawer content
 import MainDrawer from './drawers/MainDrawer.vue';
-
-// Allow choosing an App UI language, content language may not be affected.
-import LanguageSwitcher from 'components/LanguageSwitcher.vue';
-
 // Mange left drawer state
 const leftDrawerOpen = ref(false);
 function toggleLeftDrawer() {
   leftDrawerOpen.value = !leftDrawerOpen.value;
 }
+
+// I18N - Allow choosing an App UI language, content language MAY NOT be affected.
+import LanguageSwitcher from 'components/LanguageSwitcher.vue';
 </script>

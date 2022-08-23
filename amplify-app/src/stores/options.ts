@@ -2,9 +2,7 @@ import { defineStore } from 'pinia';
 
 import { useStorage } from '@vueuse/core';
 
-import { Dark } from 'quasar';
-
-export const useOptionsStore = defineStore('optionsStore', {
+export const useOptionsStore = defineStore('options', {
   state: () => ({
     darkMode: useStorage('darkMode', false),
     locale: useStorage('locale', 'en-US'),

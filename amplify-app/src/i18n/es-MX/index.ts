@@ -2,8 +2,25 @@
 // so you can safely delete all default props below
 
 export default {
-  customize: "Personalizar",
+  add: 'Agregar',
+  close: 'Cerrar',
+  create: 'Crear',
+  customize: 'Personalizar',
   darkMode: 'Modo oscuro',
+  email: 'Correo electrónico',
+  error: 'Error',
   failed: 'Accion: Fallida',
-  success: 'Acción exitosa'
+  info: 'Información',
+  open: 'Abrir',
+  passphrase: 'Frase de contraseña',
+  password: 'Clave',
+  repeatPassphrase: 'Repetir frase de contraseña',
+  repeatPassword: 'Repita la contraseña',
+  save: 'Ahorrar',
+  signin: 'Registrarse',
+  signout: 'Desconectar',
+  success: 'Acción exitosa',
+  telephone: 'Teléfono',
+  username: 'Nombre de usuario',
+  warning: 'Advertencia',
 };

@@ -17,7 +17,7 @@
 import { watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import { useOptionsStore } from '../stores/options-store.js';
+import { useOptionsStore } from '../stores/options.js';
 const optionsStore = useOptionsStore();
 
 const { locale } = useI18n({ useScope: 'global' });
