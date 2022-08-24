@@ -126,7 +126,7 @@ watchEffect(() => {
       html: true,
       actions: [
         {
-          label: 'Close',
+          label: t('close'),
           handler: () => {
             notificationsStore.delete(note.id);
           },
