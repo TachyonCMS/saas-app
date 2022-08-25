@@ -17,6 +17,11 @@
 import { watchEffect } from 'vue';
 import { useI18n } from 'vue-i18n';
 
+// Quasar language support
+import { useQuasar } from 'quasar';
+const $q = useQuasar();
+//import languages from 'quasar/lang/index.json';
+
 import { useOptionsStore } from '../stores/options.js';
 const optionsStore = useOptionsStore();
 
@@ -26,11 +31,18 @@ locale.value = optionsStore.locale;
 watchEffect(() => {
   console.log(locale)
   optionsStore.setLocale(locale.value);
+  import(
+    /* webpackInclude: /(es|en-US)\.js$/ */
+    '../../node_modules/quasar/lang/' + locale.value +'.mjs'
+    ).then(lang => {
+      console.log(lang)
+      $q.lang.set(lang.default)
+    })
 });
 
 const localeOptions = [
   { value: 'en-US', label: 'English' },
-  { value: 'es-MX', label: 'Español' },
+  { value: 'es', label: 'Español' },
 ];
 </script>
 

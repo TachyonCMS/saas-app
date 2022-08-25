@@ -12,7 +12,7 @@ const routes: RouteRecordRaw[] = [
     path: '/cms',
     component: () => import('layouts/MainLayout.vue'),
     children: [{ path: '', component: () => import('pages/cms/IndexPage.vue') }],
-    meta: { appDrawer: 'layouts/drawers/MainDrawer.vue' }
+    meta: { appDrawer: 'MainDrawer' }
   },
 
   // Always leave this as last one,

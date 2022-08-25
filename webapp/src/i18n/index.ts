@@ -1,7 +1,7 @@
 import enUS from './en-US';
-import esMX from './es-MX';
+import esMX from './es';
 
 export default {
   'en-US': enUS,
-  'es-MX': esMX
+  'es': esMX
 };

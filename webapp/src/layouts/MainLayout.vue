@@ -15,7 +15,7 @@
           {{ layoutStore.title }}
         </q-toolbar-title>
 
-        <q-btn-dropdown dropdown-icon="mdi-cog">
+        <q-btn-dropdown dropdown-icon="mdi-cog" size="sm" class="q-px-sm">
           <q-list bordered padding>
             <q-item-label header>{{ $t('customize') }}</q-item-label>
 
@@ -23,7 +23,7 @@
               <q-item-section class="text-no-wrap">
                 <q-toggle
                   v-model="optionsStore.darkMode"
-                  color="black"
+                  color="$primary"
                   :label="$t('darkMode')"
                   left-label
                   size="sm"
@@ -81,7 +81,6 @@ const notificationsStore = useNotificationsStore();
 
 // DARK MODE - Enable Quasar dark mode toggling
 const $q = useQuasar();
-
 $q.dark.set('auto');
 // Update navbar in dark mode
 watchEffect(() => {
@@ -93,6 +92,7 @@ watchEffect(() => {
   }
 });
 
+// Map internal notifiication statuses to Quasar notify types
 const notifyTypeMap = {
   error: {
     qType: 'negative',
@@ -112,11 +112,9 @@ const notifyTypeMap = {
   }
 }
 
+// Watch for new notifications and display them.
 watchEffect(() => {
-  console.log(notificationsStore.notifications);
-
   notificationsStore.notifications.forEach((note) => {
-    console.log(note);
     const msg = '<span class="text-h6">'+ t(notifyTypeMap[note.type].labelCode) +'</span><br />'+note.message;
     $q.notify({
       message: msg,
@@ -124,6 +122,7 @@ watchEffect(() => {
       position: note.position,
       type: notifyTypeMap[note.type].qType,
       html: true,
+      closeBtn: true,
       actions: [
         {
           label: t('close'),
