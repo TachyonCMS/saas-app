@@ -14,7 +14,7 @@ const path = require('path');
 module.exports = configure(function (/* ctx */) {
   return {
     eslint: {
-      // fix: true,
+      fix: true,
       // include = [],
       // exclude = [],
       // rawOptions = {},
@@ -89,7 +89,7 @@ module.exports = configure(function (/* ctx */) {
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#devServer
     devServer: {
-      // https: true
+      https: true,
       open: true // opens browser window automatically
     },
 

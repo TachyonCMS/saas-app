@@ -5,22 +5,24 @@ const routes: RouteRecordRaw[] = [
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [{ path: '', component: () => import('pages/IndexPage.vue') }],
-    meta: { appDrawer: 'layouts/drawers/MainDrawer.vue' }
+    meta: { appDrawer: 'MainDrawer' }
   },
 
   {
     path: '/cms',
     component: () => import('layouts/MainLayout.vue'),
-    children: [{ path: '', component: () => import('pages/cms/IndexPage.vue') }],
-    meta: { appDrawer: 'MainDrawer' }
+    children: [
+      { path: '', component: () => import('pages/cms/IndexPage.vue') }
+    ],
+    meta: { appDrawer: 'EntryDrawer' }
   },
 
   // Always leave this as last one,
   // but you can also remove it
   {
     path: '/:catchAll(.*)*',
-    component: () => import('pages/ErrorNotFound.vue'),
-  },
+    component: () => import('pages/ErrorNotFound.vue')
+  }
 ];
 
 export default routes;

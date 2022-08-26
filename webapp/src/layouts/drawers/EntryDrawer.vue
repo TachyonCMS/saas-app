@@ -1,6 +1,6 @@
 <template>
     <q-list>
-      <q-item-label header> Essential Links </q-item-label>
+      <q-item-label header> Join Now! </q-item-label>
 
       <EssentialLink
         v-for="link in essentialLinks"
@@ -18,8 +18,8 @@ import EssentialLink, {
 
 const essentialLinks: EssentialLinkProps[] = [
   {
-    title: 'Join Now',
-    caption: 'or Login',
+    title: 'Signup Now',
+    caption: 'or Signin',
     icon: 'mdi-login',
     link: '/',
   },

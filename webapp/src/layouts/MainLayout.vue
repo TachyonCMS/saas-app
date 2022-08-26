@@ -14,7 +14,6 @@
         <q-toolbar-title>
           {{ layoutStore.title }}
         </q-toolbar-title>
-
         <q-btn-dropdown dropdown-icon="mdi-cog" size="sm" class="q-px-sm">
           <q-list bordered padding>
             <q-item-label header>{{ $t('customize') }}</q-item-label>
@@ -41,7 +40,7 @@
     </q-header>
 
     <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
-      <MainDrawer></MainDrawer>
+      <MainDrawer v-if="route.meta.appDrawer == 'MainDrawer'"></MainDrawer>
     </q-drawer>
 
     <q-page-container>
@@ -51,9 +50,6 @@
 </template>
 
 <script setup lang="ts">
-import messages from 'src/i18n';
-import { useI18n } from 'vue-i18n';
-
 import { ref, watchEffect } from 'vue';
 import { useQuasar, setCssVar } from 'quasar';
 
@@ -66,33 +62,21 @@ import { useOptionsStore } from '../stores/options';
 const optionsStore = useOptionsStore();
 
 // LOCALIZATION
+import messages from 'src/i18n';
+import { useI18n } from 'vue-i18n';
 const { locale } = useI18n({ useScope: 'global' });
 locale.value = optionsStore.locale;
 const { t } = useI18n({
-    legacy: false, // you must set `false`, to use Composition API
-    locale: optionsStore.locale,
-    fallbackLocale: 'en-US',
-    messages,
-  })
+  legacy: false, // you must set `false`, to use Composition API
+  locale: optionsStore.locale,
+  fallbackLocale: 'en-US',
+  messages,
+});
 
 // NOTIFICATIONS Store, info about the visitors selected options
 import { useNotificationsStore } from '../stores/notifications';
 const notificationsStore = useNotificationsStore();
-
-// DARK MODE - Enable Quasar dark mode toggling
-const $q = useQuasar();
-$q.dark.set('auto');
-// Update navbar in dark mode
-watchEffect(() => {
-  $q.dark.set(optionsStore.darkMode);
-  if (optionsStore.darkMode) {
-    setCssVar('primary', '#383838', document.documentElement);
-  } else {
-    setCssVar('primary', '#33F', document.documentElement);
-  }
-});
-
-// Map internal notifiication statuses to Quasar notify types
+// Map internal notification statuses to Quasar notify types
 const notifyTypeMap = {
   error: {
     qType: 'negative',
@@ -109,34 +93,59 @@ const notifyTypeMap = {
   positive: {
     qType: 'positive',
     labelCode: 'success',
+  },
+};
+
+// DARK MODE - Enable Quasar dark mode toggling
+const $q = useQuasar();
+$q.dark.set('auto');
+// Update navbar in dark mode
+watchEffect(() => {
+  $q.dark.set(optionsStore.darkMode);
+  if (optionsStore.darkMode) {
+    setCssVar('primary', '#383838', document.documentElement);
+  } else {
+    setCssVar('primary', '#33F', document.documentElement);
   }
-}
+});
 
 // Watch for new notifications and display them.
 watchEffect(() => {
   notificationsStore.notifications.forEach((note) => {
-    const msg = '<span class="text-h6">'+ t(notifyTypeMap[note.type].labelCode) +'</span><br />'+note.message;
-    $q.notify({
-      message: msg,
-      multiLine: true,
-      position: note.position,
-      type: notifyTypeMap[note.type].qType,
-      html: true,
-      closeBtn: true,
-      actions: [
-        {
-          label: t('close'),
-          handler: () => {
-            notificationsStore.delete(note.id);
-          },
-        },
-      ],
-    });
+    displayNotification(note);
   });
 });
 
-// DRAWER - Potential left drawer content
+const displayNotification = async (notification) => {
+  const msg =
+    '<span class="text-h6">' +
+    t(notifyTypeMap[notification.type].labelCode) +
+    '</span><br />' +
+    notification.message;
+  $q.notify({
+    message: msg,
+    multiLine: true,
+    position: notification.position,
+    type: notifyTypeMap[notification.type].qType,
+    html: true,
+    //closeBtn: true,
+    actions: [
+      {
+        label: t('close'),
+        handler: () => {
+          notificationsStore.delete(notification.id);
+        },
+      },
+    ],
+  });
+};
+// DRAWER
+import { useRoute } from 'vue-router';
+// Potential left drawer content
 import MainDrawer from './drawers/MainDrawer.vue';
+import EntryDrawer from './drawers/EntryDrawer.vue';
+const route = useRoute();
+console.log(route.meta.appDrawer);
 // Mange left drawer state
 const leftDrawerOpen = ref(false);
 function toggleLeftDrawer() {

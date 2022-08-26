@@ -1,6 +1,6 @@
 <template>
     <q-list>
-      <q-item-label header> Essential Links </q-item-label>
+      <q-item-label header> Main Drawer </q-item-label>
 
       <EssentialLink
         v-for="link in essentialLinks"
