@@ -1,9 +1,10 @@
 <template>
   <q-page class="row items-center justify-evenly">
-    <q-btn @click="notificationsStore.add('error', 'some error  d  dfv df v df v dfv df v df v dfv df v  dfv dfv dfvfdvg df v df v df v df v df vdfv d fv df vd  message', 'center')" label="Error Test"></q-btn>
-    <q-btn @click="notificationsStore.add('info', 'some info message', 'center')" label="Info Test"></q-btn>
-    <q-btn @click="notificationsStore.add('warning', 'some warning message', 'center')" label="Warning Test"></q-btn>
-    <q-btn @click="notificationsStore.add('positive', 'some positive message', 'center')" label="Positive Test"></q-btn>
+    <q-btn @click="emit('notification', { type: 'error', message:'some error  d  dfv df v df v dfv df v df v dfv df v  dfv dfv dfvfdvg df v df v df v df v df vdfv d fv df vd  message', position: 'center'})" label="Error Test"></q-btn>
+    <q-btn @click="emit('notification', { type: 'info', message:'some error  d  dfv df v df v dfv df v df v dfv df v  dfv dfv dfvfdvg df v df v df v df v df vdfv d fv df vd  message', position: 'center'})" label="Info Test"></q-btn>
+    <q-btn @click="emit('notification', { type: 'warning', message:'some error  d  dfv df v df v dfv df v df v dfv df v  dfv dfv dfvfdvg df v df v df v df v df vdfv d fv df vd  message', position: 'center'})" label="Warning Test"></q-btn>
+    <q-btn @click="emit('notification', { type: 'positive', message:'some error  d  dfv df v df v dfv df v df v dfv df v  dfv dfv dfvfdvg df v df v df v df v df vdfv d fv df vd  message', position: 'center'})" label="Positive Test"></q-btn>
+    <q-btn @click="emit('notification', { type: 'negative', message:'some error  d  dfv df v df v dfv df v df v dfv df v  dfv dfv dfvfdvg df v df v df v df v df vdfv d fv df vd  message', position: 'center'})" label="Negative Test"></q-btn>
     <example-component
       title="Example component"
       active
@@ -14,6 +15,7 @@
 </template>
 
 <script setup lang="ts">
+const emit = defineEmits(['notification'])
 import { Todo, Meta } from 'components/models';
 import ExampleComponent from 'components/ExampleComponent.vue';
 import { ref } from 'vue';

@@ -19,6 +19,7 @@ export default {
   save: 'Ahorrar',
   signin: 'Registrarse',
   signout: 'Desconectar',
+  sorry: 'Perdón',
   success: 'Acción exitosa',
   telephone: 'Teléfono',
   username: 'Nombre de usuario',

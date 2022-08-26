@@ -44,7 +44,7 @@
     </q-drawer>
 
     <q-page-container>
-      <router-view />
+      <router-view @notification="event => displayNotification(event)"/>
     </q-page-container>
   </q-layout>
 </template>
@@ -93,6 +93,10 @@ const notifyTypeMap = {
   positive: {
     qType: 'positive',
     labelCode: 'success',
+  },
+  negative: {
+    qType: 'negative',
+    labelCode: 'sorry',
   },
 };
 

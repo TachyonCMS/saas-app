@@ -20,6 +20,7 @@ export default {
   save: 'Save',
   signin: 'Sign In',
   signout: 'Sign Out',
+  sorry: 'Sorry',
   success: 'Success',
   telephone: 'Telephone',
   username: 'Username',
