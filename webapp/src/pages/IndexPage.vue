@@ -1,52 +1,36 @@
 <template>
-  <q-page class="row items-center justify-evenly">
-    <q-btn @click="emit('notification', { type: 'error', message:'some error  d  dfv df v df v dfv df v df v dfv df v  dfv dfv dfvfdvg df v df v df v df v df vdfv d fv df vd  message', position: 'center'})" label="Error Test"></q-btn>
-    <q-btn @click="emit('notification', { type: 'info', message:'some error  d  dfv df v df v dfv df v df v dfv df v  dfv dfv dfvfdvg df v df v df v df v df vdfv d fv df vd  message', position: 'center'})" label="Info Test"></q-btn>
-    <q-btn @click="emit('notification', { type: 'warning', message:'some error  d  dfv df v df v dfv df v df v dfv df v  dfv dfv dfvfdvg df v df v df v df v df vdfv d fv df vd  message', position: 'center'})" label="Warning Test"></q-btn>
-    <q-btn @click="emit('notification', { type: 'positive', message:'some error  d  dfv df v df v dfv df v df v dfv df v  dfv dfv dfvfdvg df v df v df v df v df vdfv d fv df vd  message', position: 'center'})" label="Positive Test"></q-btn>
-    <q-btn @click="emit('notification', { type: 'negative', message:'some error  d  dfv df v df v dfv df v df v dfv df v  dfv dfv dfvfdvg df v df v df v df v df vdfv d fv df vd  message', position: 'center'})" label="Negative Test"></q-btn>
-    <example-component
-      title="Example component"
-      active
-      :todos="todos"
-      :meta="meta"
-    ></example-component>
+  <q-page class="flex flex-center">
+    <div class="q-pa-md row items-start q-gutter-md">
+
+
+      <q-card class="bg-dk5 tach-card"><q-card-section>{{ $t('colorDarker') }} - 5</q-card-section></q-card>
+      <q-card class="bg-dk4 tach-card"><q-card-section>{{ $t('colorDarker') }} - 4</q-card-section></q-card>
+      <q-card class="bg-dk3 tach-card"><q-card-section>{{ $t('colorDarker') }} - 3</q-card-section></q-card>
+      <q-card class="bg-dk2 tach-card"><q-card-section>{{ $t('colorDarker') }} - 2</q-card-section></q-card>
+      <q-card class="bg-dk1 tach-card"><q-card-section>{{ $t('colorDarker') }} - 1</q-card-section></q-card>
+
+      <q-card class="bg-primary tach-card"><q-card-section>{{ $t('baseColor') }}</q-card-section></q-card>
+
+      <q-card class="bg-lt1 tach-card"><q-card-section>{{ $t('colorLighter') }} - 1</q-card-section></q-card>
+      <q-card class="bg-lt2 tach-card"><q-card-section>{{ $t('colorLighter') }} - 2</q-card-section></q-card>
+      <q-card class="bg-lt3 tach-card"><q-card-section>{{ $t('colorLighter') }} - 3</q-card-section></q-card>
+      <q-card class="bg-lt4 tach-card"><q-card-section>{{ $t('colorLighter') }} - 4</q-card-section></q-card>
+      <q-card class="bg-lt5 tach-card"><q-card-section>{{ $t('colorLighter') }} - 5</q-card-section></q-card>
+
+      <q-card class="bg-secondary tach-card"><q-card-section>{{ $t('secondaryColor') }}</q-card-section></q-card>
+      <q-card class="bg-accent tach-card"><q-card-section>{{ $t('accentColor') }}</q-card-section></q-card>
+      <q-card class="bg-cta tach-card"><q-card-section>{{ $t('callToAction') }}</q-card-section></q-card>
+    </div>
   </q-page>
 </template>
 
 <script setup lang="ts">
-const emit = defineEmits(['notification'])
+const emit = defineEmits(['notification']);
 import { Todo, Meta } from 'components/models';
-import ExampleComponent from 'components/ExampleComponent.vue';
+
 import { ref } from 'vue';
-
-// NOTIFICATIONS Store, info about the visitors selected options
-import { useNotificationsStore } from '../stores/notifications';
-const notificationsStore = useNotificationsStore();
-
-const todos = ref<Todo[]>([
-  {
-    id: 1,
-    content: 'ct1',
-  },
-  {
-    id: 2,
-    content: 'ct2',
-  },
-  {
-    id: 3,
-    content: 'ct3',
-  },
-  {
-    id: 4,
-    content: 'ct4',
-  },
-  {
-    id: 5,
-    content: 'ct5',
-  },
-]);
-const meta = ref<Meta>({
-  totalCount: 1200,
-});
 </script>
+
+<style scoped lang="scss">
+
+</style>

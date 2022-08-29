@@ -1,8 +1,159 @@
 // app global css in SCSS form
+\:root {
+  --q-cta: #{$cta};
+  --q-lt1: #{$lt1};
+  --q-lt2: #{$lt2};
+  --q-lt3: #{$lt3};
+  --q-lt4: #{$lt4};
+  --q-lt5: #{$lt5};
+  --q-dk1: #{$dk1};
+  --q-dk2: #{$dk2};
+  --q-dk3: #{$dk3};
+  --q-dk4: #{$dk4};
+  --q-dk5: #{$dk5};
+
+  --q-on-primary:   #{$on-primary};
+  --q-on-secondary: #{$on-secondary};
+  --q-on-accent:    #{$on-accent};
+  --q-on-cta:       #{$on-cta};
+
+  --q-on-lt1: #{$on-lt1};
+  --q-on-lt2: #{$on-lt2};
+  --q-on-lt3: #{$on-lt3};
+  --q-on-lt4: #{$on-lt4};
+  --q-on-lt5: #{$on-lt5};
+  --q-on-dk1: #{$on-dk1};
+  --q-on-dk2: #{$on-dk2};
+  --q-on-dk3: #{$on-dk3};
+  --q-on-dk4: #{$on-dk4};
+  --q-on-dk5: #{$on-dk5};
+}
+
+
+// CTA
+
+.text-cta {
+  color: var(--q-cta) !important;
+}
+.bg-cta {
+  background: var(--q-cta) !important;
+}
+
+// TEXT colors used ON backgrounds (BG)
+
+.on-primary {
+  color: var(--q-on-primary) !important;
+}
+.on-lt1 {
+  color: var(--q-on-lt1) !important;
+}
+.on-lt2 {
+  color: var(--q-on-lt2) !important;
+}
+.on-lt3 {
+  color: var(--q-on-lt3) !important;
+}
+.on-lt4 {
+  color: var(--q-on-lt4) !important;
+}
+.on-lt5 {
+  color: var(--q-on-lt5) !important;
+}
+.on-dk1 {
+  color: var(--q-on-dk1) !important;
+}
+.on-dk2 {
+  color: var(--q-on-dk2) !important;
+}
+.on-dk3 {
+  color: var(--q-on-dk3) !important;
+}
+.on-dk4 {
+  color: var(--q-on-dk4) !important;
+}
+.on-dk5 {
+  color: var(--q-on-dk5) !important;
+}
+
+// LIGHT
+
+.text-lt1 {
+  color: var(--q-lt1) !important;
+}
+.bg-lt1 {
+  background: var(--q-lt1) !important;
+}
+.text-lt2 {
+  color: var(--q-lt2) !important;
+}
+.bg-lt2 {
+  background: var(--q-lt2) !important;
+}
+.text-lt3 {
+  color: var(--q-lt3) !important;
+}
+.bg-lt3 {
+  background: var(--q-lt3) !important;
+}
+.text-lt4 {
+  color: var(--q-lt4) !important;
+}
+.bg-lt4 {
+  background: var(--q-lt4) !important;
+}
+.text-lt5 {
+  color: var(--q-lt5) !important;
+}
+.bg-lt5 {
+  background: var(--q-lt5) !important;
+}
+
+// DARK
+
+.text-dk1 {
+  color: var(--q-dk1) !important;
+}
+.bg-dk1 {
+  background: var(--q-dk1) !important;
+}
+.text-dk2 {
+  color: var(--q-dk2) !important;
+}
+.bg-dk2 {
+  background: var(--q-dk2) !important;
+}
+.text-dk3 {
+  color: var(--q-dk3) !important;
+}
+.bg-dk3 {
+  background: var(--q-dk3) !important;
+}
+.text-dk4 {
+  color: var(--q-dk4) !important;
+}
+.bg-dk4 {
+  background: var(--q-dk4) !important;
+}
+.text-dk5 {
+  color: var(--q-dk5) !important;
+}
+.bg-dk5 {
+  background: var(--q-dk5) !important;
+}
+
 .body--light {
-  background: #FFF
+  background: #fff;
 }
 
 .body--dark {
-  background: #000
+  background: #000;
 }
+
+.tach-card {
+  width: 100%;
+  max-width: 250px;
+  min-width: 200px;
+  max-height: 250px;
+  min-height: 200px;
+}
+

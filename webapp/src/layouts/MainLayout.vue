@@ -1,7 +1,7 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
-      <q-toolbar>
+      <q-toolbar class="bg-primary on-primary">
         <q-btn
           flat
           dense
@@ -22,13 +22,58 @@
               <q-item-section class="text-no-wrap">
                 <q-toggle
                   v-model="optionsStore.darkMode"
-                  color="$primary"
+                  color="blue"
                   :label="$t('darkMode')"
                   left-label
                   size="sm"
                 ></q-toggle>
               </q-item-section>
             </q-item>
+
+            <q-item>
+              <q-item-section class="text-no-wrap">
+                <q-input
+                  v-model="optionsStore.baseColor"
+                  color="$primary"
+                  :label="$t('baseColor')"
+                  left-label
+                ></q-input>
+              </q-item-section>
+            </q-item>
+
+            <q-item>
+              <q-item-section class="text-no-wrap">
+                <q-input
+                  v-model="optionsStore.secondaryColor"
+                  color="$secondary"
+                  :label="$t('secondaryColor')"
+                  left-label
+                ></q-input>
+              </q-item-section>
+            </q-item>
+
+            <q-item>
+              <q-item-section class="text-no-wrap">
+                <q-input
+                  v-model="optionsStore.accentColor"
+                  color="$accent"
+                  :label="$t('accentColor')"
+                  left-label
+                ></q-input>
+              </q-item-section>
+            </q-item>
+
+            <q-item>
+              <q-item-section class="text-no-wrap">
+                <q-input
+                  v-model="optionsStore.ctaColor"
+                  color="$cta"
+                  :label="$t('colorCTA')"
+                  left-label
+                ></q-input>
+              </q-item-section>
+            </q-item>
+
             <q-item>
               <q-item-section class="text-no-wrap">
                 <LanguageSwitcher></LanguageSwitcher>
@@ -41,25 +86,99 @@
 
     <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
       <MainDrawer v-if="route.meta.appDrawer == 'MainDrawer'"></MainDrawer>
+      <EntryDrawer v-if="route.meta.appDrawer == 'EntryDrawer'"></EntryDrawer>
     </q-drawer>
 
     <q-page-container>
-      <router-view @notification="event => displayNotification(event)"/>
+      <router-view @notification="(event) => displayNotification(event)" />
     </q-page-container>
   </q-layout>
 </template>
 
 <script setup lang="ts">
 import { ref, watchEffect } from 'vue';
-import { useQuasar, setCssVar } from 'quasar';
-
-// LAYOUT Store info about the layout
-import { useLayoutStore } from '../stores/layout';
-const layoutStore = useLayoutStore();
+import { useQuasar, setCssVar, colors } from 'quasar';
 
 // OPTION Store, info about the visitors selected options
 import { useOptionsStore } from '../stores/options';
 const optionsStore = useOptionsStore();
+
+// LAYOUT Store info about the layout
+import { useLayoutStore } from '../stores/layout';
+const layoutStore = useLayoutStore();
+// COLOR
+const { lighten } = colors;
+const hexReg = /^#([0-9a-f]{3}){1,2}$/i;
+watchEffect(() => {
+  if (optionsStore.baseColor) {
+    if (hexReg.test(optionsStore.baseColor)) {
+      console.log(optionsStore.baseColor);
+      setCssVar(
+        'lt1',
+        lighten(optionsStore.baseColor, 20),
+        document.documentElement
+      );
+      setCssVar(
+        'lt2',
+        lighten(optionsStore.baseColor, 30),
+        document.documentElement
+      );
+      setCssVar(
+        'lt3',
+        lighten(optionsStore.baseColor, 40),
+        document.documentElement
+      );
+      setCssVar(
+        'lt4',
+        lighten(optionsStore.baseColor, 50),
+        document.documentElement
+      );
+      setCssVar(
+        'lt5',
+        lighten(optionsStore.baseColor, 60),
+        document.documentElement
+      );
+      setCssVar(
+        'dk1',
+        lighten(optionsStore.baseColor, -5),
+        document.documentElement
+      );
+      setCssVar(
+        'dk2',
+        lighten(optionsStore.baseColor, -10),
+        document.documentElement
+      );
+      setCssVar(
+        'dk3',
+        lighten(optionsStore.baseColor, -20),
+        document.documentElement
+      );
+      setCssVar(
+        'dk4',
+        lighten(optionsStore.baseColor, -30),
+        document.documentElement
+      );
+      setCssVar(
+        'dk5',
+        lighten(optionsStore.baseColor, -40),
+        document.documentElement
+      );
+    }
+  }
+
+  if (optionsStore.ctaColor) {
+    if (hexReg.test(optionsStore.ctaColor)) {
+      console.log(optionsStore.ctaColor);
+      setCssVar(
+        'cta',
+        lighten(optionsStore.ctaColor, 20),
+        document.documentElement
+      );
+    }
+  }
+
+
+});
 
 // LOCALIZATION
 import messages from 'src/i18n';
@@ -72,11 +191,89 @@ const { t } = useI18n({
   fallbackLocale: 'en-US',
   messages,
 });
+import(
+  /* webpackInclude: /(es|en-US)\.js$/ */
+  '../../node_modules/quasar/lang/' + locale.value + '.mjs'
+).then((lang) => {
+  console.log(lang);
+  $q.lang.set(lang.default);
+});
 
-// NOTIFICATIONS Store, info about the visitors selected options
-import { useNotificationsStore } from '../stores/notifications';
-const notificationsStore = useNotificationsStore();
-// Map internal notification statuses to Quasar notify types
+// DARK MODE - Enable Quasar dark mode toggling
+const $q = useQuasar();
+$q.dark.set('auto');
+// Update navbar in dark mode
+watchEffect(() => {
+  $q.dark.set(optionsStore.darkMode);
+  if (optionsStore.darkMode) {
+    setCssVar('primary', '#212121', document.documentElement);
+    setCssVar('cta', '#FFA500', document.documentElement);
+    setCssVar('lt1', lighten('#212121', 5), document.documentElement);
+    setCssVar('lt2', lighten('#212121', 10), document.documentElement);
+    setCssVar('lt3', lighten('#212121', 15), document.documentElement);
+    setCssVar('lt4', lighten('#212121', 20), document.documentElement);
+    setCssVar('lt5', lighten('#212121', 25), document.documentElement);
+    setCssVar('dk1', lighten('#212121', -10), document.documentElement);
+    setCssVar('dk2', lighten('#212121', -15), document.documentElement);
+    setCssVar('dk3', lighten('#212121', -20), document.documentElement);
+    setCssVar('dk4', lighten('#212121', -25), document.documentElement);
+    setCssVar('dk5', lighten('#212121', -30), document.documentElement);
+  } else {
+    setCssVar('primary', optionsStore.baseColor, document.documentElement);
+          setCssVar(
+        'lt1',
+        lighten(optionsStore.baseColor, 20),
+        document.documentElement
+      );
+      setCssVar(
+        'lt2',
+        lighten(optionsStore.baseColor, 30),
+        document.documentElement
+      );
+      setCssVar(
+        'lt3',
+        lighten(optionsStore.baseColor, 40),
+        document.documentElement
+      );
+      setCssVar(
+        'lt4',
+        lighten(optionsStore.baseColor, 50),
+        document.documentElement
+      );
+      setCssVar(
+        'lt5',
+        lighten(optionsStore.baseColor, 60),
+        document.documentElement
+      );
+    setCssVar(
+      'dk1',
+      lighten(optionsStore.baseColor, -5),
+      document.documentElement
+    );
+    setCssVar(
+      'dk2',
+      lighten(optionsStore.baseColor, -10),
+      document.documentElement
+    );
+    setCssVar(
+      'dk3',
+      lighten(optionsStore.baseColor, -20),
+      document.documentElement
+    );
+    setCssVar(
+      'dk4',
+      lighten(optionsStore.baseColor, -30),
+      document.documentElement
+    );
+    setCssVar(
+      'dk5',
+      lighten(optionsStore.baseColor, -40),
+      document.documentElement
+    );
+  }
+});
+
+// NOTIFICATIONS Map internal notification statuses to Quasar notify types
 const notifyTypeMap = {
   error: {
     qType: 'negative',
@@ -99,27 +296,6 @@ const notifyTypeMap = {
     labelCode: 'sorry',
   },
 };
-
-// DARK MODE - Enable Quasar dark mode toggling
-const $q = useQuasar();
-$q.dark.set('auto');
-// Update navbar in dark mode
-watchEffect(() => {
-  $q.dark.set(optionsStore.darkMode);
-  if (optionsStore.darkMode) {
-    setCssVar('primary', '#383838', document.documentElement);
-  } else {
-    setCssVar('primary', '#33F', document.documentElement);
-  }
-});
-
-// Watch for new notifications and display them.
-watchEffect(() => {
-  notificationsStore.notifications.forEach((note) => {
-    displayNotification(note);
-  });
-});
-
 const displayNotification = async (notification) => {
   const msg =
     '<span class="text-h6">' +
@@ -132,17 +308,11 @@ const displayNotification = async (notification) => {
     position: notification.position,
     type: notifyTypeMap[notification.type].qType,
     html: true,
-    //closeBtn: true,
-    actions: [
-      {
-        label: t('close'),
-        handler: () => {
-          notificationsStore.delete(notification.id);
-        },
-      },
-    ],
+    persistent: true,
+    actions: [{ icon: 'mdi-close', color: 'white' }],
   });
 };
+
 // DRAWER
 import { useRoute } from 'vue-router';
 // Potential left drawer content
@@ -159,3 +329,8 @@ function toggleLeftDrawer() {
 // I18N - Allow choosing an App UI language, content language MAY NOT be affected.
 import LanguageSwitcher from 'components/LanguageSwitcher.vue';
 </script>
+
+<style lang="scss">
+$ltx: lighten($primary, 30%);
+</style>
+
