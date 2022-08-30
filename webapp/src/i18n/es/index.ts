@@ -4,7 +4,7 @@
 export default {
   accentColor: 'Acentuar el color',
   add: 'Agregar',
-  baseColor: 'Color primario',
+  primaryColor: 'Color primario',
   callToAction: 'Llamada a la acción (CTA)',
   close: 'Cerrar',
   colorCTA: 'Color CTA',

@@ -8,7 +8,7 @@
     emit-value
     map-options
     options-dense
-    :dark="optionsStore.darkMode"
+    :dark="colorsStore.darkMode"
     input-style="color: white"
   />
 </template>
@@ -23,14 +23,14 @@ const $q = useQuasar();
 //import languages from 'quasar/lang/index.json';
 
 import { useOptionsStore } from '../stores/options.js';
-const optionsStore = useOptionsStore();
+const colorsStore = useOptionsStore();
 
 const { locale } = useI18n({ useScope: 'global' });
-locale.value = optionsStore.locale;
+locale.value = colorsStore.locale;
 
 watchEffect(() => {
   console.log(locale)
-  optionsStore.setLocale(locale.value);
+  colorsStore.setLocale(locale.value);
   import(
     /* webpackInclude: /(es|en-US)\.js$/ */
     '../../node_modules/quasar/lang/' + locale.value +'.mjs'

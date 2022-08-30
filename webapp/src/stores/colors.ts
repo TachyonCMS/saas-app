@@ -2,17 +2,12 @@ import { defineStore } from 'pinia';
 
 import { useStorage } from '@vueuse/core';
 
-const testContrast = (bgColor: string) => {
-  return true;
-}
-
-export const useOptionsStore = defineStore('options', {
+export const useColorsStore = defineStore('colors', {
   state: () => ({
     darkMode: useStorage('darkMode', false),
-    locale: useStorage('locale', 'en-US'),
-    baseColor: useStorage('baseColor', '#303F9F'),
-    secondaryColor: useStorage('secondaryColor', '#303F9F'),
-    accentColor: useStorage('accentColor', '#303F9F'),
+    primaryColor: useStorage('primaryColor', '#1976D2'),
+    secondaryColor: useStorage('secondaryColor', '#26A69A'),
+    accentColor: useStorage('accentColor', '#9C27B0'),
     ctaColor: useStorage('ctaColor', '#FB8500'),
     glossy: useStorage('glossy', false),
   }),
@@ -25,11 +20,8 @@ export const useOptionsStore = defineStore('options', {
     setDarkMode(val: boolean) {
       this.darkMode = val;
     },
-    setLocale(val: string) {
-      this.locale = val;
-    },
     setColor(val: string) {
-      this.baseColor = val;
+      this.primaryColor = val;
     },
     setSecondaryColor(val: string) {
       this.secondaryColor = val;

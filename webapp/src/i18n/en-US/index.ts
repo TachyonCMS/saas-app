@@ -4,7 +4,7 @@
 export default {
   accentColor: 'Accent Color',
   add: 'Add',
-  baseColor: 'Primary Color',
+  primaryColor: 'Primary Color',
   callToAction: 'Call to Action',
   close: 'Close',
   colorCTA: 'CTA Color',

@@ -21,7 +21,7 @@
             <q-item>
               <q-item-section class="text-no-wrap">
                 <q-toggle
-                  v-model="optionsStore.darkMode"
+                  v-model="colorsStore.darkMode"
                   color="$primary"
                   :label="$t('darkMode')"
                   left-label
@@ -59,16 +59,16 @@ const layoutStore = useLayoutStore();
 
 // OPTION Store, info about the visitors selected options
 import { useOptionsStore } from '../stores/options';
-const optionsStore = useOptionsStore();
+const colorsStore = useOptionsStore();
 
 // LOCALIZATION
 import messages from 'src/i18n';
 import { useI18n } from 'vue-i18n';
 const { locale } = useI18n({ useScope: 'global' });
-locale.value = optionsStore.locale;
+locale.value = colorsStore.locale;
 const { t } = useI18n({
   legacy: false, // you must set `false`, to use Composition API
-  locale: optionsStore.locale,
+  locale: colorsStore.locale,
   fallbackLocale: 'en-US',
   messages,
 });
@@ -78,8 +78,8 @@ const $q = useQuasar();
 $q.dark.set('auto');
 // Update navbar in dark mode
 watchEffect(() => {
-  $q.dark.set(optionsStore.darkMode);
-  if (optionsStore.darkMode) {
+  $q.dark.set(colorsStore.darkMode);
+  if (colorsStore.darkMode) {
     setCssVar('primary', '#27187e', document.documentElement);
   } else {
     setCssVar('primary', '#33F', document.documentElement);

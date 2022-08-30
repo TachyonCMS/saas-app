@@ -21,7 +21,7 @@
             <q-item>
               <q-item-section class="text-no-wrap">
                 <q-toggle
-                  v-model="optionsStore.darkMode"
+                  v-model="colorsStore.darkMode"
                   color="blue"
                   :label="$t('darkMode')"
                   left-label
@@ -30,49 +30,9 @@
               </q-item-section>
             </q-item>
 
-            <q-item>
-              <q-item-section class="text-no-wrap">
-                <q-input
-                  v-model="optionsStore.baseColor"
-                  color="$primary"
-                  :label="$t('baseColor')"
-                  left-label
-                ></q-input>
-              </q-item-section>
-            </q-item>
-
-            <q-item>
-              <q-item-section class="text-no-wrap">
-                <q-input
-                  v-model="optionsStore.secondaryColor"
-                  color="$secondary"
-                  :label="$t('secondaryColor')"
-                  left-label
-                ></q-input>
-              </q-item-section>
-            </q-item>
-
-            <q-item>
-              <q-item-section class="text-no-wrap">
-                <q-input
-                  v-model="optionsStore.accentColor"
-                  color="$accent"
-                  :label="$t('accentColor')"
-                  left-label
-                ></q-input>
-              </q-item-section>
-            </q-item>
-
-            <q-item>
-              <q-item-section class="text-no-wrap">
-                <q-input
-                  v-model="optionsStore.ctaColor"
-                  color="$cta"
-                  :label="$t('colorCTA')"
-                  left-label
-                ></q-input>
-              </q-item-section>
-            </q-item>
+            <template v-if="enableColorSwitcher">
+              <ColorSwitcher></ColorSwitcher>
+            </template>
 
             <q-item>
               <q-item-section class="text-no-wrap">
@@ -96,98 +56,117 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watchEffect } from 'vue';
+import { ref, watchEffect, computed } from 'vue';
 import { useQuasar, setCssVar, colors } from 'quasar';
 
-// OPTION Store, info about the visitors selected options
-import { useOptionsStore } from '../stores/options';
-const optionsStore = useOptionsStore();
+// COLORS Store, info about the visitors selected options
+import { useColorsStore } from '../stores/colors';
+const colorsStore = useColorsStore();
+
+// LOCALIZATION Store, info about the visitors selected options
+import { useLocalizationStore } from '../stores/localization';
+const localizationStore = useLocalizationStore();
 
 // LAYOUT Store info about the layout
 import { useLayoutStore } from '../stores/layout';
 const layoutStore = useLayoutStore();
+
 // COLOR
+const enableColorSwitcher = ref(true);
 const { lighten } = colors;
 const hexReg = /^#([0-9a-f]{3}){1,2}$/i;
 watchEffect(() => {
-  if (optionsStore.baseColor) {
-    if (hexReg.test(optionsStore.baseColor)) {
-      console.log(optionsStore.baseColor);
+  console.log('Updating Primary Colors');
+  if (colorsStore.primaryColor) {
+    if (hexReg.test(colorsStore.primaryColor)) {
+      console.log(colorsStore.primaryColor);
       setCssVar(
         'lt1',
-        lighten(optionsStore.baseColor, 20),
+        lighten(colorsStore.primaryColor, 20),
         document.documentElement
       );
       setCssVar(
         'lt2',
-        lighten(optionsStore.baseColor, 30),
+        lighten(colorsStore.primaryColor, 30),
         document.documentElement
       );
       setCssVar(
         'lt3',
-        lighten(optionsStore.baseColor, 40),
+        lighten(colorsStore.primaryColor, 40),
         document.documentElement
       );
       setCssVar(
         'lt4',
-        lighten(optionsStore.baseColor, 50),
+        lighten(colorsStore.primaryColor, 50),
         document.documentElement
       );
       setCssVar(
         'lt5',
-        lighten(optionsStore.baseColor, 60),
+        lighten(colorsStore.primaryColor, 60),
         document.documentElement
       );
       setCssVar(
         'dk1',
-        lighten(optionsStore.baseColor, -5),
+        lighten(colorsStore.primaryColor, -5),
         document.documentElement
       );
       setCssVar(
         'dk2',
-        lighten(optionsStore.baseColor, -10),
+        lighten(colorsStore.primaryColor, -10),
         document.documentElement
       );
       setCssVar(
         'dk3',
-        lighten(optionsStore.baseColor, -20),
+        lighten(colorsStore.primaryColor, -20),
         document.documentElement
       );
       setCssVar(
         'dk4',
-        lighten(optionsStore.baseColor, -30),
+        lighten(colorsStore.primaryColor, -30),
         document.documentElement
       );
       setCssVar(
         'dk5',
-        lighten(optionsStore.baseColor, -40),
+        lighten(colorsStore.primaryColor, -40),
         document.documentElement
       );
     }
   }
 
-  if (optionsStore.ctaColor) {
-    if (hexReg.test(optionsStore.ctaColor)) {
-      console.log(optionsStore.ctaColor);
+  if (colorsStore.ctaColor) {
+    if (hexReg.test(colorsStore.ctaColor)) {
+      console.log(colorsStore.ctaColor);
       setCssVar(
         'cta',
-        lighten(optionsStore.ctaColor, 20),
+        lighten(colorsStore.ctaColor, 20),
         document.documentElement
       );
     }
   }
+});
 
-
+watchEffect(() => {
+  console.log('Updating CTA Color');
+  if (colorsStore.ctaColor) {
+    if (hexReg.test(colorsStore.ctaColor)) {
+      console.log(colorsStore.ctaColor);
+      setCssVar(
+        'clt1',
+        lighten(colorsStore.ctaColor, 20),
+        document.documentElement
+      );
+    }
+  }
 });
 
 // LOCALIZATION
 import messages from 'src/i18n';
 import { useI18n } from 'vue-i18n';
 const { locale } = useI18n({ useScope: 'global' });
-locale.value = optionsStore.locale;
+locale.value = localizationStore.locale;
 const { t } = useI18n({
   legacy: false, // you must set `false`, to use Composition API
-  locale: optionsStore.locale,
+  locale: colorsStore.locale,
   fallbackLocale: 'en-US',
   messages,
 });
@@ -204,70 +183,87 @@ const $q = useQuasar();
 $q.dark.set('auto');
 // Update navbar in dark mode
 watchEffect(() => {
-  $q.dark.set(optionsStore.darkMode);
-  if (optionsStore.darkMode) {
-    setCssVar('primary', '#212121', document.documentElement);
+  $q.dark.set(colorsStore.darkMode);
+  if (colorsStore.darkMode) {
+    console.log('Updating colors');
     setCssVar('cta', '#FFA500', document.documentElement);
-    setCssVar('lt1', lighten('#212121', 5), document.documentElement);
-    setCssVar('lt2', lighten('#212121', 10), document.documentElement);
-    setCssVar('lt3', lighten('#212121', 15), document.documentElement);
-    setCssVar('lt4', lighten('#212121', 20), document.documentElement);
-    setCssVar('lt5', lighten('#212121', 25), document.documentElement);
-    setCssVar('dk1', lighten('#212121', -10), document.documentElement);
-    setCssVar('dk2', lighten('#212121', -15), document.documentElement);
-    setCssVar('dk3', lighten('#212121', -20), document.documentElement);
-    setCssVar('dk4', lighten('#212121', -25), document.documentElement);
-    setCssVar('dk5', lighten('#212121', -30), document.documentElement);
+    setCssVar('primary', '#282828', document.documentElement);
+    setCssVar('lt1', '#383838', document.documentElement);
+    setCssVar('lt2', '#484848', document.documentElement);
+    setCssVar('lt3', '#505050', document.documentElement);
+    setCssVar('lt4', '#606060', document.documentElement);
+    setCssVar('lt5', '#686868', document.documentElement);
+    setCssVar('dk1', '#202020', document.documentElement);
+    setCssVar('dk2', '#181818', document.documentElement);
+    setCssVar('dk3', '#101010', document.documentElement);
+    setCssVar('dk4', '#080808', document.documentElement);
+    setCssVar('dk5', '#000000', document.documentElement);
+    setCssVar('secondary', '#888888', document.documentElement);
+    setCssVar('slt1', '#909090', document.documentElement);
+    setCssVar('slt2', '#A0A0A0', document.documentElement);
+    setCssVar('slt3', '#A9A9A9', document.documentElement);
+    setCssVar('slt4', '#B8B8B8', document.documentElement);
+    setCssVar('slt5', '#C0C0C0', document.documentElement);
+    setCssVar('sdk1', '#808080', document.documentElement);
+    setCssVar('sdk2', '#787878', document.documentElement);
+    setCssVar('sdk3', '#707070', document.documentElement);
+    setCssVar('sdk4', '#787878', document.documentElement);
+    setCssVar('sdk5', '#696969', document.documentElement);
   } else {
-    setCssVar('primary', optionsStore.baseColor, document.documentElement);
-          setCssVar(
-        'lt1',
-        lighten(optionsStore.baseColor, 20),
-        document.documentElement
-      );
-      setCssVar(
-        'lt2',
-        lighten(optionsStore.baseColor, 30),
-        document.documentElement
-      );
-      setCssVar(
-        'lt3',
-        lighten(optionsStore.baseColor, 40),
-        document.documentElement
-      );
-      setCssVar(
-        'lt4',
-        lighten(optionsStore.baseColor, 50),
-        document.documentElement
-      );
-      setCssVar(
-        'lt5',
-        lighten(optionsStore.baseColor, 60),
-        document.documentElement
-      );
+    setCssVar('primary', colorsStore.primaryColor, document.documentElement);
+    setCssVar(
+      'secondary',
+      colorsStore.secondaryColor,
+      document.documentElement
+    );
+    setCssVar(
+      'lt1',
+      lighten(colorsStore.primaryColor, 20),
+      document.documentElement
+    );
+    setCssVar(
+      'lt2',
+      lighten(colorsStore.primaryColor, 30),
+      document.documentElement
+    );
+    setCssVar(
+      'lt3',
+      lighten(colorsStore.primaryColor, 40),
+      document.documentElement
+    );
+    setCssVar(
+      'lt4',
+      lighten(colorsStore.primaryColor, 50),
+      document.documentElement
+    );
+    setCssVar(
+      'lt5',
+      lighten(colorsStore.primaryColor, 60),
+      document.documentElement
+    );
     setCssVar(
       'dk1',
-      lighten(optionsStore.baseColor, -5),
+      lighten(colorsStore.primaryColor, -5),
       document.documentElement
     );
     setCssVar(
       'dk2',
-      lighten(optionsStore.baseColor, -10),
+      lighten(colorsStore.primaryColor, -10),
       document.documentElement
     );
     setCssVar(
       'dk3',
-      lighten(optionsStore.baseColor, -20),
+      lighten(colorsStore.primaryColor, -20),
       document.documentElement
     );
     setCssVar(
       'dk4',
-      lighten(optionsStore.baseColor, -30),
+      lighten(colorsStore.primaryColor, -30),
       document.documentElement
     );
     setCssVar(
       'dk5',
-      lighten(optionsStore.baseColor, -40),
+      lighten(colorsStore.primaryColor, -40),
       document.documentElement
     );
   }
@@ -328,9 +324,16 @@ function toggleLeftDrawer() {
 
 // I18N - Allow choosing an App UI language, content language MAY NOT be affected.
 import LanguageSwitcher from 'components/LanguageSwitcher.vue';
+
+// COLOR SWITCHER - Define primary, secondary, accent and CTA colors.
+import ColorSwitcher from 'components/ColorSwitcher.vue';
+
 </script>
 
 <style lang="scss">
-$ltx: lighten($primary, 30%);
+.bg-slt1 {
+  background-color: '#454';
+}
 </style>
+
 
