@@ -1,14 +1,14 @@
 <template>
   <q-select
     v-model="locale"
-    :options="localeOptions"
+    :options="localeI18n"
     label="Language"
     dense
     borderless
     emit-value
     map-options
     options-dense
-    :dark="optionsStore.darkMode"
+    :dark="i18nStore.darkMode"
     input-style="color: white"
   />
 </template>
@@ -22,15 +22,15 @@ import { useQuasar } from 'quasar';
 const $q = useQuasar();
 //import languages from 'quasar/lang/index.json';
 
-import { useOptionsStore } from '../stores/options.js';
-const optionsStore = useOptionsStore();
+import { useI18nStore } from '../stores/i18n.js';
+const i18nStore = useI18nStore();
 
 const { locale } = useI18n({ useScope: 'global' });
-locale.value = optionsStore.locale;
+locale.value = i18nStore.locale;
 
 watchEffect(() => {
   console.log(locale)
-  optionsStore.setLocale(locale.value);
+  i18nStore.setLocale(locale.value);
   import(
     /* webpackInclude: /(es|en-US)\.js$/ */
     '../../node_modules/quasar/lang/' + locale.value +'.mjs'
@@ -40,7 +40,7 @@ watchEffect(() => {
     })
 });
 
-const localeOptions = [
+const localeI18n = [
   { value: 'en-US', label: 'English' },
   { value: 'es', label: 'Español' },
 ];

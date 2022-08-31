@@ -1,9 +1,14 @@
-// This is just an example,
-// so you can safely delete all default props below
-
 export default {
+  accentColor: 'Accent Color',
   add: 'Add',
+  primaryColor: 'Primary Color',
+  callToAction: 'Call to Action',
   close: 'Close',
+  colorCTA: 'CTA Color',
+  colorDarker: 'Darker Color',
+  colorLighter: 'Lighter Color',
+  colorLightest: 'Lightest Color',
+  colorPaper: 'Paper Color',
   create: 'Create',
   customize: 'Customize',
   darkMode: 'Dark Mode',
@@ -18,6 +23,7 @@ export default {
   repeatPassphrase: 'Repeat Passphrase',
   repeatPassword: 'Repeat Password',
   save: 'Save',
+  secondaryColor: 'Secondary Color',
   signin: 'Sign In',
   signout: 'Sign Out',
   sorry: 'Sorry',
