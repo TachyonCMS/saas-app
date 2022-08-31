@@ -2,13 +2,13 @@ import { defineStore } from 'pinia';
 
 import { useStorage } from '@vueuse/core';
 
-export const useColorsStore = defineStore('colors', {
+export const useColorStore = defineStore('colors', {
   state: () => ({
     darkMode: useStorage('darkMode', false),
-    primaryColor: useStorage('primaryColor', null),
-    secondaryColor: useStorage('secondaryColor', null),
-    accentColor: useStorage('accentColor', null),
-    ctaColor: useStorage('ctaColor', null),
+    primaryColor: useStorage('primaryColor', null) as unknown,
+    secondaryColor: useStorage('secondaryColor', null)as unknown,
+    accentColor: useStorage('accentColor', null) as unknown,
+    ctaColor: useStorage('ctaColor', null) as unknown,
     glossy: useStorage('glossy', false),
   }),
 

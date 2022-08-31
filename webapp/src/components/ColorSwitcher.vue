@@ -51,8 +51,8 @@ import { ref, watchEffect } from 'vue';
 
 import { setCssVar, colors } from 'quasar';
 
-import { useColorsStore } from '../stores/colors.js';
-const colorsStore = useColorsStore();
+import { useColorStore } from '../stores/color.js';
+const colorsStore = useColorStore();
 
 const { lighten } = colors;
 const hexReg = /^#([0-9a-f]{3}){1,2}$/i;

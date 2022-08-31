@@ -21,7 +21,7 @@
             <q-item>
               <q-item-section class="text-no-wrap">
                 <q-toggle
-                  v-model="colorsStore.darkMode"
+                  v-model="colorStore.darkMode"
                   color="$primary"
                   :label="$t('darkMode')"
                   left-label
@@ -50,13 +50,13 @@
     </q-drawer>
 
     <q-page-container>
-      <router-view @notification="event => displayNotification(event)"/>
+      <router-view @notification="(event) => displayNotification(event)" />
     </q-page-container>
   </q-layout>
 </template>
 
 <script setup lang="ts">
-import { ref, watchEffect } from 'vue';
+import { ref, watchEffect, watch, computed } from 'vue';
 import { useQuasar, setCssVar, colors } from 'quasar';
 const { getPaletteColor, lighten } = colors;
 
@@ -68,9 +68,12 @@ const layoutStore = useLayoutStore();
 import { useI18nStore } from '../stores/i18n';
 const i18nStore = useI18nStore();
 
+// RegEx for validating hex color codes
+const hexReg = /^#([0-9a-f]{3}){1,2}$/i;
+
 // COLORS Store, info about the visitors selected color options
-import { useColorsStore } from '../stores/colors';
-const colorsStore = useColorsStore();
+import { useColorStore } from '../stores/color';
+const colorStore = useColorStore();
 
 // LOCALIZATION
 import messages from 'src/i18n';
@@ -116,8 +119,8 @@ const $q = useQuasar();
 $q.dark.set('auto');
 // Update navbar in dark mode
 watchEffect(() => {
-  $q.dark.set(colorsStore.darkMode);
-  if (colorsStore.darkMode) {
+  $q.dark.set(colorStore.darkMode);
+  if (colorStore.darkMode) {
     setCssVar('primary', '#383838', document.documentElement);
   } else {
     setCssVar('primary', '#33F', document.documentElement);
@@ -174,50 +177,120 @@ import LanguageSwitcher from 'components/LanguageSwitcher.vue';
 const basePrimaryColor = getPaletteColor('primary');
 const baseSecondaryColor = getPaletteColor('secondary');
 const baseAccentColor = getPaletteColor('accent');
-console.log('Configured Colors: ' + 'primary: ' + basePrimaryColor + '  secondary: ' + baseSecondaryColor + '  accent: ' + baseAccentColor);
-
-// COLORS CURRENT
-const currPrimaryColor = colorsStore.primaryColor ? colorsStore.primaryColor : basePrimaryColor;
-const currSecondaryColor = colorsStore.secondaryColor ? colorsStore.secondaryColor : baseSecondaryColor;
-const currAccentColor = colorsStore.accentColor ? colorsStore.accentColor : baseAccentColor;
-
-console.log('Dynamic Primary Color: ' + currPrimaryColor);
+console.log(
+  'Configured Colors: ' +
+    'primary: ' +
+    basePrimaryColor +
+    '  secondary: ' +
+    baseSecondaryColor +
+    '  accent: ' +
+    baseAccentColor
+);
 
 // COLOR DEFINITIONS
-// Calculate primary shades
-const dk5 = ref(lighten(currPrimaryColor, -65));
-const dk4 = ref(lighten(currPrimaryColor, -50));
-const dk3 = ref(lighten(currPrimaryColor, -35));
-const dk2 = ref(lighten(currPrimaryColor, -20));
-const dk1 = ref(lighten(currPrimaryColor, -10));
-const lt5 = ref(lighten(currPrimaryColor, 65));
-const lt4 = ref(lighten(currPrimaryColor, 50));
-const lt3 = ref(lighten(currPrimaryColor, 35));
-const lt2 = ref(lighten(currPrimaryColor, 20));
-const lt1 = ref(lighten(currPrimaryColor, 10));
-// Calculate secondary shades
-const sdk5 = ref(lighten(currSecondaryColor, -65));
-const sdk4 = ref(lighten(currSecondaryColor, -50));
-const sdk3 = ref(lighten(currSecondaryColor, -35));
-const sdk2 = ref(lighten(currSecondaryColor, -20));
-const sdk1 = ref(lighten(currSecondaryColor, -10));
-const slt5 = ref(lighten(currSecondaryColor, 65));
-const slt4 = ref(lighten(currSecondaryColor, 50));
-const slt3 = ref(lighten(currSecondaryColor, 35));
-const slt2 = ref(lighten(currSecondaryColor, 20));
-const slt1 = ref(lighten(currSecondaryColor, 10));
+// Calculate default primary shades
+const dk5 = ref(lighten(basePrimaryColor, -65));
+const dk4 = ref(lighten(basePrimaryColor, -50));
+const dk3 = ref(lighten(basePrimaryColor, -35));
+const dk2 = ref(lighten(basePrimaryColor, -20));
+const dk1 = ref(lighten(basePrimaryColor, -10));
+const lt5 = ref(lighten(basePrimaryColor, 65));
+const lt4 = ref(lighten(basePrimaryColor, 50));
+const lt3 = ref(lighten(basePrimaryColor, 35));
+const lt2 = ref(lighten(basePrimaryColor, 20));
+const lt1 = ref(lighten(basePrimaryColor, 10));
+// Calculate default secondary shades
+const sdk5 = ref(lighten(baseSecondaryColor, -65));
+const sdk4 = ref(lighten(baseSecondaryColor, -50));
+const sdk3 = ref(lighten(baseSecondaryColor, -35));
+const sdk2 = ref(lighten(baseSecondaryColor, -20));
+const sdk1 = ref(lighten(baseSecondaryColor, -10));
+const slt5 = ref(lighten(baseSecondaryColor, 65));
+const slt4 = ref(lighten(baseSecondaryColor, 50));
+const slt3 = ref(lighten(baseSecondaryColor, 35));
+const slt2 = ref(lighten(baseSecondaryColor, 20));
+const slt1 = ref(lighten(baseSecondaryColor, 10));
 
+if(!colorStore.primaryColor) {
+  colorStore.setPrimaryColor(basePrimaryColor);
+}
+if(!colorStore.secondaryColor) {
+  colorStore.setSecondaryColor(baseSecondaryColor);
+}
+if(!colorStore.accentColor) {
+  colorStore.setAccentColor(baseAccentColor);
+}
+
+// Change the primary color and shades
+const setPrimaryColor = (hexCode) => {
+  setCssVar('primary', hexCode, document.documentElement);
+  dk5.value = lighten(hexCode, -65);
+  dk4.value = lighten(hexCode, -50);
+  dk3.value = lighten(hexCode, -35);
+  dk2.value = lighten(hexCode, -20);
+  dk1.value = lighten(hexCode, -10);
+  lt5.value = lighten(hexCode, 65);
+  lt4.value = lighten(hexCode, 50);
+  lt3.value = lighten(hexCode, 35);
+  lt2.value = lighten(hexCode, 20);
+  lt1.value = lighten(hexCode, 10);
+}
+
+// Change the secondary color and shades
+const setSecondaryColor = (hexCode) => {
+  setCssVar('secondary', hexCode, document.documentElement);
+  sdk5.value = lighten(hexCode, -65);
+  sdk4.value = lighten(hexCode, -50);
+  sdk3.value = lighten(hexCode, -35);
+  sdk2.value = lighten(hexCode, -20);
+  sdk1.value = lighten(hexCode, -10);
+  slt5.value = lighten(hexCode, 65);
+  slt4.value = lighten(hexCode, 50);
+  slt3.value = lighten(hexCode, 35);
+  slt2.value = lighten(hexCode, 20);
+  slt1.value = lighten(hexCode, 10);
+}
+
+// Change the secondary color and shades
+const setAccentColor = (hexCode) => {
+  setCssVar('accent', hexCode, document.documentElement);
+}
+
+// COLORS CURRENT
+const currPrimaryColor = computed(() => {
+  return colorStore.primaryColor ? colorStore.primaryColor : basePrimaryColor;
+});
+const currSecondaryColor = computed(() => {
+  return colorStore.secondaryColor
+    ? colorStore.secondaryColor
+    : baseSecondaryColor;
+});
+const currAccentColor = computed(() => {
+  return colorStore.accentColor ? colorStore.accentColor : baseAccentColor;
+});
+
+console.log('Dynamic Primary Color: ' + currPrimaryColor);
 
 // COLORS SWITCHER- Allow choosing app colors
 import ColorSwitcher from 'components/ColorSwitcher.vue';
 
-//const setShades(type, hexColor) =
+watchEffect(() => {
+  setPrimaryColor(currPrimaryColor.value)
+})
 
+watchEffect(() => {
+  setSecondaryColor(currSecondaryColor.value)
+})
+
+watchEffect(() => {
+  setAccentColor(currAccentColor.value)
+})
+
+//const setShades(type, hexColor) =
 </script>
 
 
 <style lang="scss">
-
 // BACKGROUND COLOR
 // Primary Dark
 .bg-dk5 {
