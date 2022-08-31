@@ -58,7 +58,10 @@
 <script setup lang="ts">
 import { ref, watchEffect, watch, computed } from 'vue';
 import { useQuasar, setCssVar, colors } from 'quasar';
+const $q = useQuasar();
 const { getPaletteColor, lighten } = colors;
+// CTA color
+const ctaColor = ref(null);
 
 // LAYOUT Store info about the layout
 import { useLayoutStore } from '../stores/layout';
@@ -114,16 +117,88 @@ const notifyTypeMap = {
   },
 };
 
+// The value defined in quasar.variables.scss
+const basePrimaryColor = getPaletteColor('primary');
+const baseSecondaryColor = getPaletteColor('secondary');
+const baseAccentColor = getPaletteColor('accent');
+
+// COLOR DEFINITIONS
+
+// Calculate default primary shades
+const dk5 = ref(lighten(basePrimaryColor, -65));
+const dk4 = ref(lighten(basePrimaryColor, -50));
+const dk3 = ref(lighten(basePrimaryColor, -35));
+const dk2 = ref(lighten(basePrimaryColor, -20));
+const dk1 = ref(lighten(basePrimaryColor, -10));
+const lt5 = ref(lighten(basePrimaryColor, 65));
+const lt4 = ref(lighten(basePrimaryColor, 50));
+const lt3 = ref(lighten(basePrimaryColor, 35));
+const lt2 = ref(lighten(basePrimaryColor, 20));
+const lt1 = ref(lighten(basePrimaryColor, 10));
+// Calculate default secondary shades
+const sdk5 = ref(lighten(baseSecondaryColor, -65));
+const sdk4 = ref(lighten(baseSecondaryColor, -50));
+const sdk3 = ref(lighten(baseSecondaryColor, -35));
+const sdk2 = ref(lighten(baseSecondaryColor, -20));
+const sdk1 = ref(lighten(baseSecondaryColor, -10));
+const slt5 = ref(lighten(baseSecondaryColor, 65));
+const slt4 = ref(lighten(baseSecondaryColor, 50));
+const slt3 = ref(lighten(baseSecondaryColor, 35));
+const slt2 = ref(lighten(baseSecondaryColor, 20));
+const slt1 = ref(lighten(baseSecondaryColor, 10));
+
+if (!colorStore.primaryColor) {
+  colorStore.setPrimaryColor(basePrimaryColor);
+}
+if (!colorStore.secondaryColor) {
+  colorStore.setSecondaryColor(baseSecondaryColor);
+}
+if (!colorStore.accentColor) {
+  colorStore.setAccentColor(baseAccentColor);
+}
+
+// Change the primary color and shades
+const setPrimaryColor = (hexCode: string) => {
+  setCssVar('primary', hexCode, document.documentElement);
+  dk5.value = lighten(hexCode, -65);
+  dk4.value = lighten(hexCode, -50);
+  dk3.value = lighten(hexCode, -35);
+  dk2.value = lighten(hexCode, -20);
+  dk1.value = lighten(hexCode, -10);
+  lt5.value = lighten(hexCode, 65);
+  lt4.value = lighten(hexCode, 50);
+  lt3.value = lighten(hexCode, 35);
+  lt2.value = lighten(hexCode, 20);
+  lt1.value = lighten(hexCode, 10);
+};
+
+// Change the secondary color and shades
+const setSecondaryColor = (hexCode: string) => {
+  setCssVar('secondary', hexCode, document.documentElement);
+  sdk5.value = lighten(hexCode, -65);
+  sdk4.value = lighten(hexCode, -50);
+  sdk3.value = lighten(hexCode, -35);
+  sdk2.value = lighten(hexCode, -20);
+  sdk1.value = lighten(hexCode, -10);
+  slt5.value = lighten(hexCode, 65);
+  slt4.value = lighten(hexCode, 50);
+  slt3.value = lighten(hexCode, 35);
+  slt2.value = lighten(hexCode, 20);
+  slt1.value = lighten(hexCode, 10);
+};
+
 // DARK MODE - Enable Quasar dark mode toggling
-const $q = useQuasar();
+
 $q.dark.set('auto');
 // Update navbar in dark mode
 watchEffect(() => {
   $q.dark.set(colorStore.darkMode);
   if (colorStore.darkMode) {
-    setCssVar('primary', '#383838', document.documentElement);
+    setPrimaryColor('#383838');
+    setSecondaryColor('#696969');
   } else {
-    setCssVar('primary', '#33F', document.documentElement);
+    setPrimaryColor(colorStore.primaryColor);
+    setSecondaryColor(colorStore.secondaryColor);
   }
 });
 
@@ -173,88 +248,21 @@ function toggleLeftDrawer() {
 // I18N - Allow choosing an App UI language, content language MAY NOT be affected.
 import LanguageSwitcher from 'components/LanguageSwitcher.vue';
 
-// The value defined in quasar.variables.scss
-const basePrimaryColor = getPaletteColor('primary');
-const baseSecondaryColor = getPaletteColor('secondary');
-const baseAccentColor = getPaletteColor('accent');
-console.log(
-  'Configured Colors: ' +
-    'primary: ' +
-    basePrimaryColor +
-    '  secondary: ' +
-    baseSecondaryColor +
-    '  accent: ' +
-    baseAccentColor
-);
 
-// COLOR DEFINITIONS
-// Calculate default primary shades
-const dk5 = ref(lighten(basePrimaryColor, -65));
-const dk4 = ref(lighten(basePrimaryColor, -50));
-const dk3 = ref(lighten(basePrimaryColor, -35));
-const dk2 = ref(lighten(basePrimaryColor, -20));
-const dk1 = ref(lighten(basePrimaryColor, -10));
-const lt5 = ref(lighten(basePrimaryColor, 65));
-const lt4 = ref(lighten(basePrimaryColor, 50));
-const lt3 = ref(lighten(basePrimaryColor, 35));
-const lt2 = ref(lighten(basePrimaryColor, 20));
-const lt1 = ref(lighten(basePrimaryColor, 10));
-// Calculate default secondary shades
-const sdk5 = ref(lighten(baseSecondaryColor, -65));
-const sdk4 = ref(lighten(baseSecondaryColor, -50));
-const sdk3 = ref(lighten(baseSecondaryColor, -35));
-const sdk2 = ref(lighten(baseSecondaryColor, -20));
-const sdk1 = ref(lighten(baseSecondaryColor, -10));
-const slt5 = ref(lighten(baseSecondaryColor, 65));
-const slt4 = ref(lighten(baseSecondaryColor, 50));
-const slt3 = ref(lighten(baseSecondaryColor, 35));
-const slt2 = ref(lighten(baseSecondaryColor, 20));
-const slt1 = ref(lighten(baseSecondaryColor, 10));
-
-if(!colorStore.primaryColor) {
-  colorStore.setPrimaryColor(basePrimaryColor);
-}
-if(!colorStore.secondaryColor) {
-  colorStore.setSecondaryColor(baseSecondaryColor);
-}
-if(!colorStore.accentColor) {
-  colorStore.setAccentColor(baseAccentColor);
-}
-
-// Change the primary color and shades
-const setPrimaryColor = (hexCode) => {
-  setCssVar('primary', hexCode, document.documentElement);
-  dk5.value = lighten(hexCode, -65);
-  dk4.value = lighten(hexCode, -50);
-  dk3.value = lighten(hexCode, -35);
-  dk2.value = lighten(hexCode, -20);
-  dk1.value = lighten(hexCode, -10);
-  lt5.value = lighten(hexCode, 65);
-  lt4.value = lighten(hexCode, 50);
-  lt3.value = lighten(hexCode, 35);
-  lt2.value = lighten(hexCode, 20);
-  lt1.value = lighten(hexCode, 10);
-}
 
 // Change the secondary color and shades
-const setSecondaryColor = (hexCode) => {
-  setCssVar('secondary', hexCode, document.documentElement);
-  sdk5.value = lighten(hexCode, -65);
-  sdk4.value = lighten(hexCode, -50);
-  sdk3.value = lighten(hexCode, -35);
-  sdk2.value = lighten(hexCode, -20);
-  sdk1.value = lighten(hexCode, -10);
-  slt5.value = lighten(hexCode, 65);
-  slt4.value = lighten(hexCode, 50);
-  slt3.value = lighten(hexCode, 35);
-  slt2.value = lighten(hexCode, 20);
-  slt1.value = lighten(hexCode, 10);
-}
-
-// Change the secondary color and shades
-const setAccentColor = (hexCode) => {
+const setAccentColor = (hexCode: string) => {
   setCssVar('accent', hexCode, document.documentElement);
-}
+};
+
+// Change the secondary color and shades
+const setCtaColor = (hexCode: string) => {
+  colorStore.setCtaColor(hexCode);
+  setCssVar('cta', hexCode, document.documentElement);
+  ctaColor.value = hexCode;
+};
+
+
 
 // COLORS CURRENT
 const currPrimaryColor = computed(() => {
@@ -268,6 +276,10 @@ const currSecondaryColor = computed(() => {
 const currAccentColor = computed(() => {
   return colorStore.accentColor ? colorStore.accentColor : baseAccentColor;
 });
+const currCtaColor = computed(() => {
+  return colorStore.ctaColor ? colorStore.ctaColor : '#F00';
+});
+
 
 console.log('Dynamic Primary Color: ' + currPrimaryColor);
 
@@ -275,16 +287,29 @@ console.log('Dynamic Primary Color: ' + currPrimaryColor);
 import ColorSwitcher from 'components/ColorSwitcher.vue';
 
 watchEffect(() => {
-  setPrimaryColor(currPrimaryColor.value)
-})
+  if (hexReg.test(currPrimaryColor.value)) {
+    setPrimaryColor(currPrimaryColor.value);
+  }
+});
 
 watchEffect(() => {
-  setSecondaryColor(currSecondaryColor.value)
-})
+  if (hexReg.test(currSecondaryColor.value)) {
+    setSecondaryColor(currSecondaryColor.value);
+  }
+});
 
 watchEffect(() => {
-  setAccentColor(currAccentColor.value)
-})
+  if (hexReg.test(currAccentColor.value)) {
+    setAccentColor(currAccentColor.value);
+  }
+});
+
+watchEffect(() => {
+  if (hexReg.test(currCtaColor.value)) {
+    setCtaColor(currCtaColor.value);
+  }
+});
+
 
 //const setShades(type, hexColor) =
 </script>
@@ -292,6 +317,10 @@ watchEffect(() => {
 
 <style lang="scss">
 // BACKGROUND COLOR
+// CTA Color
+.bg-cta {
+  background-color: v-bind('ctaColor');
+}
 // Primary Dark
 .bg-dk5 {
   background-color: v-bind('dk5');
@@ -358,6 +387,10 @@ watchEffect(() => {
 }
 
 // TEXT COLOR
+// CTA Color
+.bg-cta {
+  background-color: v-bind('ctaColor');
+}
 .text-dk5 {
   background-color: v-bind('dk5');
 }
