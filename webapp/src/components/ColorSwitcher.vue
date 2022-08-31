@@ -73,9 +73,6 @@
 </template>
 
 <script  setup lang="ts">
-import { ref, watchEffect } from 'vue';
-
-import { setCssVar, colors } from 'quasar';
 
 import { useColorStore } from '../stores/color.js';
 const colorStore = useColorStore();
