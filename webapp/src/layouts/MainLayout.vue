@@ -56,7 +56,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watchEffect, watch, computed } from 'vue';
+import { ref, watchEffect, computed } from 'vue';
 import { useQuasar, setCssVar, colors } from 'quasar';
 const $q = useQuasar();
 const { getPaletteColor, lighten } = colors;
