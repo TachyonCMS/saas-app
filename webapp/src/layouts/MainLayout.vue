@@ -17,6 +17,11 @@
         <q-btn-dropdown dropdown-icon="mdi-cog" size="sm" class="q-px-sm">
           <q-list bordered padding>
             <q-item-label header>{{ $t('customize') }}</q-item-label>
+            <q-item>
+              <q-item-section class="text-no-wrap">
+                <LanguageSwitcher></LanguageSwitcher>
+              </q-item-section>
+            </q-item>
 
             <q-item>
               <q-item-section class="text-no-wrap">
@@ -34,11 +39,7 @@
                 <ColorSwitcher></ColorSwitcher>
               </q-item-section>
             </q-item>
-            <q-item>
-              <q-item-section class="text-no-wrap">
-                <LanguageSwitcher></LanguageSwitcher>
-              </q-item-section>
-            </q-item>
+
           </q-list>
         </q-btn-dropdown>
       </q-toolbar>
