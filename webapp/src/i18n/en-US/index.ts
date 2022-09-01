@@ -10,6 +10,7 @@ export default {
   colorLightest: 'Lightest Color',
   colorPaper: 'Paper Color',
   create: 'Create',
+  ctaColor: 'CTA Color',
   customize: 'Customize',
   darkMode: 'Dark Mode',
   delete: 'Delete',

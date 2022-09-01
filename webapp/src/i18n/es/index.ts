@@ -9,6 +9,7 @@ export default {
   colorLighter: 'Color más claro',
   colorLightest: 'Color más claro',
   colorPaper: 'Color del papel',
+  ctaColor: 'CTA Color',
   create: 'Crear',
   customize: 'Personalizar',
   darkMode: 'Modo oscuro',

@@ -1,7 +1,7 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
-      <q-toolbar>
+      <q-toolbar class="on-primary">
         <q-btn
           flat
           dense
@@ -59,7 +59,7 @@
 import { ref, watchEffect, computed } from 'vue';
 import { useQuasar, setCssVar, colors } from 'quasar';
 const $q = useQuasar();
-const { getPaletteColor, lighten } = colors;
+const { getPaletteColor, lighten, brightness } = colors;
 // CTA color
 const ctaColor = ref(null);
 
@@ -147,6 +147,36 @@ const slt3 = ref(lighten(baseSecondaryColor, 35));
 const slt2 = ref(lighten(baseSecondaryColor, 20));
 const slt1 = ref(lighten(baseSecondaryColor, 10));
 
+const lightText = '#FFF';
+const darkText = '#000';
+
+const onPrimary = ref(lightText);
+const onSecondary = ref(lightText);
+const onAccent = ref(lightText);
+const onCta = ref(lightText);
+
+const onDk5 = ref(lightText);
+const onDk4 = ref(lightText);
+const onDk3 = ref(lightText);
+const onDk2 = ref(lightText);
+const onDk1 = ref(lightText);
+const onLt5 = ref(lightText);
+const onLt4 = ref(lightText);
+const onLt3 = ref(darkText);
+const onLt2 = ref(darkText);
+const onLt1 = ref(darkText);
+
+const onSdk5 = ref(lightText);
+const onSdk4 = ref(lightText);
+const onSdk3 = ref(lightText);
+const onSdk2 = ref(lightText);
+const onSdk1 = ref(lightText);
+const onSlt5 = ref(lightText);
+const onSlt4 = ref(lightText);
+const onSlt3 = ref(darkText);
+const onSlt2 = ref(darkText);
+const onSlt1 = ref(darkText);
+
 if (!colorStore.primaryColor) {
   colorStore.setPrimaryColor(basePrimaryColor);
 }
@@ -170,10 +200,35 @@ const setPrimaryColor = (hexCode: string) => {
   lt3.value = lighten(hexCode, 35);
   lt2.value = lighten(hexCode, 20);
   lt1.value = lighten(hexCode, 10);
+
+  onPrimary.value = brightness(hexCode) >  130 ? darkText : lightText;
+
+  onDk5.value = brightness(dk5.value) >  130 ? darkText : lightText;
+  onDk4.value = brightness(dk4.value) >  130 ? darkText : lightText;
+  onDk3.value = brightness(dk3.value) >  130 ? darkText : lightText;
+  onDk2.value = brightness(dk2.value) >  130 ? darkText : lightText;
+  onDk1.value = brightness(dk1.value) >  130 ? darkText : lightText;
+  onLt5.value = brightness(lt5.value) >  130 ? darkText : lightText;
+  onLt4.value = brightness(lt4.value) >  130 ? darkText : lightText;
+  onLt3.value = brightness(lt3.value) >  130 ? darkText : lightText;
+  onLt2.value = brightness(lt2.value) >  130 ? darkText : lightText;
+  onLt1.value = brightness(lt1.value) >  130 ? darkText : lightText;
+
+  onSdk5.value = brightness(sdk5.value) >  130 ? darkText : lightText;
+  onSdk4.value = brightness(sdk4.value) >  130 ? darkText : lightText;
+  onSdk3.value = brightness(sdk3.value) >  130 ? darkText : lightText;
+  onSdk2.value = brightness(sdk2.value) >  130 ? darkText : lightText;
+  onSdk1.value = brightness(sdk1.value) >  130 ? darkText : lightText;
+  onSlt5.value = brightness(slt5.value) >  130 ? darkText : lightText;
+  onSlt4.value = brightness(slt4.value) >  130 ? darkText : lightText;
+  onSlt3.value = brightness(slt3.value) >  130 ? darkText : lightText;
+  onSlt2.value = brightness(slt2.value) >  130 ? darkText : lightText;
+  onSlt1.value = brightness(slt1.value) >  130 ? darkText : lightText;
 };
 
 // Change the secondary color and shades
 const setSecondaryColor = (hexCode: string) => {
+  onSecondary.value = brightness(hexCode) >  130 ? darkText : lightText;
   setCssVar('secondary', hexCode, document.documentElement);
   sdk5.value = lighten(hexCode, -65);
   sdk4.value = lighten(hexCode, -50);
@@ -248,8 +303,6 @@ function toggleLeftDrawer() {
 // I18N - Allow choosing an App UI language, content language MAY NOT be affected.
 import LanguageSwitcher from 'components/LanguageSwitcher.vue';
 
-
-
 // Change the secondary color and shades
 const setAccentColor = (hexCode: string) => {
   setCssVar('accent', hexCode, document.documentElement);
@@ -261,8 +314,6 @@ const setCtaColor = (hexCode: string) => {
   setCssVar('cta', hexCode, document.documentElement);
   ctaColor.value = hexCode;
 };
-
-
 
 // COLORS CURRENT
 const currPrimaryColor = computed(() => {
@@ -279,7 +330,6 @@ const currAccentColor = computed(() => {
 const currCtaColor = computed(() => {
   return colorStore.ctaColor ? colorStore.ctaColor : '#F00';
 });
-
 
 console.log('Dynamic Primary Color: ' + currPrimaryColor);
 
@@ -310,12 +360,87 @@ watchEffect(() => {
   }
 });
 
-
 //const setShades(type, hexColor) =
 </script>
 
 
 <style lang="scss">
+// TEXT COLOR USED ON BACKGROUND
+.on-primary {
+  color: v-bind('onPrimary');
+}
+.on-secondary {
+  color: v-bind('onSecondary');
+}
+.on-accent {
+  color: v-bind('onAccent');
+}
+.on-cta {
+  color: v-bind('onCta');
+}
+
+.on-dk5 {
+  color: v-bind('onDk5');
+}
+.on-dk4 {
+  color: v-bind('onDk4');
+}
+.on-dk3 {
+  color: v-bind('onDk3');
+}
+.on-dk2 {
+  color: v-bind('onDk2');
+}
+.on-dk1 {
+  color: v-bind('onDk1');
+}
+.on-lt5 {
+  color: v-bind('onLt5');
+}
+.on-lt4 {
+  color: v-bind('onLt4');
+}
+.on-lt3 {
+  color: v-bind('onLt3');
+}
+.on-lt2 {
+  color: v-bind('onLt2');
+}
+.on-lt1 {
+  color: v-bind('onLt1');
+}
+
+.on-sdk5 {
+  color: v-bind('onSdk5');
+}
+.on-sdk4 {
+  color: v-bind('onSdk4');
+}
+.on-sdk3 {
+  color: v-bind('onSdk3');
+}
+.on-sdk2 {
+  color: v-bind('onSdk2');
+}
+.on-sdk1 {
+  color: v-bind('onSdk1');
+}
+.on-slt5 {
+  color: v-bind('onSlt5');
+}
+.on-slt4 {
+  color: v-bind('onSlt4');
+}
+.on-slt3 {
+  color: v-bind('onSlt3');
+}
+.on-slt2 {
+  color: v-bind('onSlt2');
+}
+.on-slt1 {
+  color: v-bind('onSlt1');
+}
+
 // BACKGROUND COLOR
 // CTA Color
 .bg-cta {
@@ -388,7 +513,7 @@ watchEffect(() => {
 
 // TEXT COLOR
 // CTA Color
-.bg-cta {
+.text-cta {
   background-color: v-bind('ctaColor');
 }
 .text-dk5 {

@@ -2,7 +2,13 @@
   <div>
     <q-item>
       <q-item-section class="text-no-wrap">
-        <q-input filled v-model="colorStore.primaryColor" :label="$t('primaryColor')">
+        <q-input
+          filled
+          v-model="colorStore.primaryColor"
+          :disable="colorStore.darkMode"
+          :rules="['anyColor']"
+          :label="$t('primaryColor')"
+        >
           <template v-slot:append>
             <q-icon name="colorize" class="cursor-pointer">
               <q-popup-proxy
@@ -19,24 +25,35 @@
     </q-item>
 
     <q-item>
-      <q-input filled v-model="colorStore.secondaryColor" :label="$t('secondaryColor')">
-          <template v-slot:append>
-            <q-icon name="colorize" class="cursor-pointer">
-              <q-popup-proxy
-                cover
-                transition-show="scale"
-                transition-hide="scale"
-              >
-                <q-color v-model="colorStore.secondaryColor"></q-color>
-              </q-popup-proxy>
-            </q-icon>
-          </template>
-        </q-input>
+      <q-input
+        filled
+        v-model="colorStore.secondaryColor"
+        :disable="colorStore.darkMode"
+        :rules="['anyColor']"
+        :label="$t('secondaryColor')"
+      >
+        <template v-slot:append>
+          <q-icon name="colorize" class="cursor-pointer">
+            <q-popup-proxy
+              cover
+              transition-show="scale"
+              transition-hide="scale"
+            >
+              <q-color v-model="colorStore.secondaryColor"></q-color>
+            </q-popup-proxy>
+          </q-icon>
+        </template>
+      </q-input>
     </q-item>
 
     <q-item>
       <q-item-section class="text-no-wrap">
-        <q-input filled v-model="colorStore.accentColor" :label="$t('accentColor')">
+        <q-input
+          filled
+          v-model="colorStore.accentColor"
+          :rules="['anyColor']"
+          :label="$t('accentColor')"
+        >
           <template v-slot:append>
             <q-icon name="colorize" class="cursor-pointer">
               <q-popup-proxy
@@ -54,7 +71,7 @@
 
     <q-item>
       <q-item-section class="text-no-wrap">
-        <q-input filled v-model="colorStore.ctaColor" :label="$t('ctaColor')">
+        <q-input filled v-model="colorStore.ctaColor" :label="$t('ctaColor')" :rules="['anyColor']">
           <template v-slot:append>
             <q-icon name="colorize" class="cursor-pointer">
               <q-popup-proxy
@@ -73,7 +90,6 @@
 </template>
 
 <script  setup lang="ts">
-
 import { useColorStore } from '../stores/color.js';
 const colorStore = useColorStore();
 </script>
