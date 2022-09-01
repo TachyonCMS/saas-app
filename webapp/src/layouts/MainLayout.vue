@@ -276,13 +276,6 @@ watch(
   }
 );
 
-// Watch for new notifications and display them.
-watchEffect(() => {
-  notificationsStore.notifications.forEach((note) => {
-    displayNotification(note);
-  });
-});
-
 const displayNotification = async (notification) => {
   const msg =
     '<span class="text-h6">' +
@@ -300,7 +293,7 @@ const displayNotification = async (notification) => {
       {
         label: t('close'),
         handler: () => {
-          notificationsStore.delete(notification.id);
+          // notificationsStore.delete(notification.id);
         },
       },
     ],
