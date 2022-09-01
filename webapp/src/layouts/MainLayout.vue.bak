@@ -11,12 +11,17 @@
           @click="toggleLeftDrawer"
         />
 
-        <q-toolbar-title>
+        <q-toolbar-title class="on-primary">
           {{ layoutStore.title }}
         </q-toolbar-title>
         <q-btn-dropdown dropdown-icon="mdi-cog" size="sm" class="q-px-sm">
           <q-list bordered padding>
             <q-item-label header>{{ $t('customize') }}</q-item-label>
+            <q-item>
+              <q-item-section class="text-no-wrap">
+                <LanguageSwitcher></LanguageSwitcher>
+              </q-item-section>
+            </q-item>
 
             <q-item>
               <q-item-section class="text-no-wrap">
@@ -34,11 +39,6 @@
                 <ColorSwitcher></ColorSwitcher>
               </q-item-section>
             </q-item>
-            <q-item>
-              <q-item-section class="text-no-wrap">
-                <LanguageSwitcher></LanguageSwitcher>
-              </q-item-section>
-            </q-item>
           </q-list>
         </q-btn-dropdown>
       </q-toolbar>
@@ -50,18 +50,16 @@
     </q-drawer>
 
     <q-page-container>
-      <!--{{ basePrimaryColor }} {{ baseSecondaryColor }}
-      {{ colorStore.primaryColor }} {{ colorStore.secondaryColor }} -->
       <router-view @notification="(event) => displayNotification(event)" />
     </q-page-container>
   </q-layout>
 </template>
 
 <script setup lang="ts">
-import { ref, watch, watchEffect, computed } from 'vue';
+import { ref, watchEffect, computed } from 'vue';
 import { useQuasar, setCssVar, colors } from 'quasar';
 const $q = useQuasar();
-const { getPaletteColor, lighten, brightness } = colors;
+const { getPaletteColor, lighten, luminosity, brightness } = colors;
 // CTA color
 const ctaColor = ref(null);
 
@@ -124,88 +122,96 @@ const basePrimaryColor = getPaletteColor('primary');
 const baseSecondaryColor = getPaletteColor('secondary');
 const baseAccentColor = getPaletteColor('accent');
 
+const onPrimary = ref('#FFF');
+const onSecondary = ref('#FFF');
+const onAccent = ref('#FFF');
+const onCta = ref('#FFF');
+
 // COLOR DEFINITIONS
 
 // Calculate default primary shades
 const dk5 = ref(lighten(basePrimaryColor, -65));
+const onDk5 = brightness(dk5.value) > 100 ? '#000' : '#FFF';
 const dk4 = ref(lighten(basePrimaryColor, -50));
+const onDk4 = brightness(dk4.value) > 100 ? '#000' : '#FFF';
 const dk3 = ref(lighten(basePrimaryColor, -35));
+const onDk3 = brightness(dk3.value) > 100 ? '#000' : '#FFF';
 const dk2 = ref(lighten(basePrimaryColor, -20));
+const onDk2 = brightness(dk2.value) > 100 ? '#000' : '#FFF';
 const dk1 = ref(lighten(basePrimaryColor, -10));
+const onDk1 = brightness(dk1.value) > 100 ? '#000' : '#FFF';
 const lt5 = ref(lighten(basePrimaryColor, 65));
+const onLt5 = brightness(lt5.value) > 100 ? '#000' : '#FFF';
 const lt4 = ref(lighten(basePrimaryColor, 50));
+const onLt4 = brightness(lt4.value) > 100 ? '#000' : '#FFF';
 const lt3 = ref(lighten(basePrimaryColor, 35));
+const onLt3 = brightness(lt3.value) > 100 ? '#000' : '#FFF';
 const lt2 = ref(lighten(basePrimaryColor, 20));
+const onLt2 = brightness(lt2.value) > 100 ? '#000' : '#FFF';
 const lt1 = ref(lighten(basePrimaryColor, 10));
+const onLt1 = brightness(lt1.value) > 100 ? '#000' : '#FFF';
 // Calculate default secondary shades
 const sdk5 = ref(lighten(baseSecondaryColor, -65));
+const onSdk5 = brightness(sdk5.value) > 100 ? '#000' : '#FFF';
 const sdk4 = ref(lighten(baseSecondaryColor, -50));
+const onSdk4 = brightness(sdk4.value) > 100 ? '#000' : '#FFF';
 const sdk3 = ref(lighten(baseSecondaryColor, -35));
+const onSdk3 = brightness(sdk3.value) > 100 ? '#000' : '#FFF';
 const sdk2 = ref(lighten(baseSecondaryColor, -20));
+const onSdk2 = brightness(sdk2.value) > 100 ? '#000' : '#FFF';
 const sdk1 = ref(lighten(baseSecondaryColor, -10));
+const onSdk1 = brightness(sdk1.value) > 100 ? '#000' : '#FFF';
 const slt5 = ref(lighten(baseSecondaryColor, 65));
+const onSlt5 = brightness(slt5.value) > 100 ? '#000' : '#FFF';
 const slt4 = ref(lighten(baseSecondaryColor, 50));
+const onSlt4 = brightness(slt4.value) > 100 ? '#000' : '#FFF';
 const slt3 = ref(lighten(baseSecondaryColor, 35));
+const onSlt3 = brightness(slt3.value) > 100 ? '#000' : '#FFF';
 const slt2 = ref(lighten(baseSecondaryColor, 20));
+const onSlt2 = brightness(slt2.value) > 100 ? '#000' : '#FFF';
 const slt1 = ref(lighten(baseSecondaryColor, 10));
+const onSlt1 = brightness(slt1.value) > 100 ? '#000' : '#FFF';
 
-const lightText = '#FFF';
-const darkText = '#000';
-
-const onPrimary = ref(lightText);
-const onSecondary = ref(lightText);
-const onAccent = ref(lightText);
-const onCta = ref(lightText);
-
-const onDk5 = ref(lightText);
-const onDk4 = ref(lightText);
-const onDk3 = ref(lightText);
-const onDk2 = ref(lightText);
-const onDk1 = ref(lightText);
-const onLt5 = ref(darkText);
-const onLt4 = ref(darkText);
-const onLt3 = ref(darkText);
-const onLt2 = ref(lightText);
-const onLt1 = ref(lightText);
-
-const onSdk5 = ref(lightText);
-const onSdk4 = ref(lightText);
-const onSdk3 = ref(lightText);
-const onSdk2 = ref(lightText);
-const onSdk1 = ref(lightText);
-const onSlt5 = ref(darkText);
-const onSlt4 = ref(darkText);
-const onSlt3 = ref(darkText);
-const onSlt2 = ref(lightText);
-const onSlt1 = ref(lightText);
+if (!colorStore.primaryColor) {
+  colorStore.setPrimaryColor(basePrimaryColor);
+}
+if (!colorStore.secondaryColor) {
+  colorStore.setSecondaryColor(baseSecondaryColor);
+}
+if (!colorStore.accentColor) {
+  colorStore.setAccentColor(baseAccentColor);
+}
 
 // Change the primary color and shades
 const setPrimaryColor = (hexCode: string) => {
-  console.log(hexCode);
   setCssVar('primary', hexCode, document.documentElement);
+
+  console.log('Luminosity: ' + luminosity(hexCode));
+  console.log('Brightness: ' + brightness(hexCode));
+
   dk5.value = lighten(hexCode, -65);
+  console.log('DK5 Luminosity: ' + luminosity(dk5.value));
+  console.log('DK5 Brightness: ' + brightness(dk5.value));
   dk4.value = lighten(hexCode, -50);
   dk3.value = lighten(hexCode, -35);
   dk2.value = lighten(hexCode, -20);
   dk1.value = lighten(hexCode, -10);
+
   lt5.value = lighten(hexCode, 65);
+  console.log('LT5 Luminosity: ' + luminosity(lt5.value));
+  console.log('LT5 Brightness: ' + brightness(lt5.value));
+
+  console.log('WHITE Luminosity: ' + luminosity('#ffffff'));
+  console.log('WHITE Brightness: ' + brightness('#ffffff'));
+
+  console.log('BLACK Luminosity: ' + luminosity('#000000'));
+  console.log('BLACK Brightness: ' + brightness('#000000'));
+
   lt4.value = lighten(hexCode, 50);
   lt3.value = lighten(hexCode, 35);
   lt2.value = lighten(hexCode, 20);
+
   lt1.value = lighten(hexCode, 10);
-
-  onPrimary.value = brightness(hexCode) > 128 ? darkText : lightText;
-
-  onDk5.value = brightness(dk5.value) > 128 ? darkText : lightText;
-  onDk4.value = brightness(dk4.value) > 128 ? darkText : lightText;
-  onDk3.value = brightness(dk3.value) > 128 ? darkText : lightText;
-  onDk2.value = brightness(dk2.value) > 128 ? darkText : lightText;
-  onDk1.value = brightness(dk1.value) > 128 ? darkText : lightText;
-  onLt5.value = brightness(lt5.value) > 128 ? darkText : lightText;
-  onLt4.value = brightness(lt4.value) > 128 ? darkText : lightText;
-  onLt3.value = brightness(lt3.value) > 128 ? darkText : lightText;
-  onLt2.value = brightness(lt2.value) > 128 ? darkText : lightText;
-  onLt1.value = brightness(lt1.value) > 128 ? darkText : lightText;
 };
 
 // Change the secondary color and shades
@@ -221,59 +227,22 @@ const setSecondaryColor = (hexCode: string) => {
   slt3.value = lighten(hexCode, 35);
   slt2.value = lighten(hexCode, 20);
   slt1.value = lighten(hexCode, 10);
-
-  onSecondary.value = brightness(hexCode) > 128 ? darkText : lightText;
-
-  onSdk5.value = brightness(sdk5.value) > 128 ? darkText : lightText;
-  onSdk4.value = brightness(sdk4.value) > 128 ? darkText : lightText;
-  onSdk3.value = brightness(sdk3.value) > 128 ? darkText : lightText;
-  onSdk2.value = brightness(sdk2.value) > 128 ? darkText : lightText;
-  onSdk1.value = brightness(sdk1.value) > 128 ? darkText : lightText;
-  onSlt5.value = brightness(slt5.value) > 128 ? darkText : lightText;
-  onSlt4.value = brightness(slt4.value) > 128 ? darkText : lightText;
-  onSlt3.value = brightness(slt3.value) > 128 ? darkText : lightText;
-  onSlt2.value = brightness(slt2.value) > 128 ? darkText : lightText;
-  onSlt1.value = brightness(slt1.value) > 128 ? darkText : lightText;
 };
 
-if (!colorStore.primaryColor) {
-  colorStore.setPrimaryColor(basePrimaryColor);
-} else {
-  console.log(colorStore.primaryColor)
-  setPrimaryColor(colorStore.primaryColor);
-}
-if (!colorStore.secondaryColor) {
-  colorStore.setSecondaryColor(baseSecondaryColor);
-} else {
-  console.log(colorStore.secondaryColor)
-  setSecondaryColor(colorStore.secondaryColor);
-}
-if (!colorStore.accentColor) {
-  colorStore.setAccentColor(baseAccentColor);
-}
 // DARK MODE - Enable Quasar dark mode toggling
 
 $q.dark.set('auto');
 // Update navbar in dark mode
-watch(
-  () => colorStore.darkMode,
-  (currentValue, oldValue) => {
-    console.log(currentValue);
-    console.log(oldValue);
-    if (currentValue != oldValue) {
-      if (colorStore.darkMode) {
-        console.log('turning dark');
-        setPrimaryColor('#383838');
-        setSecondaryColor('#696969');
-      } else {
-        console.log('turning light: ' + colorStore.primaryColor);
-        setPrimaryColor(colorStore.primaryColor);
-        setSecondaryColor(colorStore.secondaryColor);
-      }
-      $q.dark.set(colorStore.darkMode);
-    }
+watchEffect(() => {
+  $q.dark.set(colorStore.darkMode);
+  if (colorStore.darkMode) {
+    setPrimaryColor('#383838');
+    setSecondaryColor('#696969');
+  } else {
+    setPrimaryColor(colorStore.primaryColor);
+    setSecondaryColor(colorStore.secondaryColor);
   }
-);
+});
 
 // Watch for new notifications and display them.
 watchEffect(() => {
@@ -326,17 +295,21 @@ const setAccentColor = (hexCode: string) => {
   setCssVar('accent', hexCode, document.documentElement);
 };
 
+const currCtaColor = computed(() => {
+  return colorStore.ctaColor ? colorStore.ctaColor : '#F00';
+});
+
 // Change the secondary color and shades
 const setCtaColor = (hexCode: string) => {
+  console.log(hexCode);
   colorStore.setCtaColor(hexCode);
   setCssVar('cta', hexCode, document.documentElement);
   ctaColor.value = hexCode;
+  onCta.value = brightness(hexCode) > 100 ? '#000' : '#FFF';
 };
 
 // COLORS CURRENT
 const currPrimaryColor = computed(() => {
-  console.log(colorStore.primaryColor);
-  console.log(basePrimaryColor);
   return colorStore.primaryColor ? colorStore.primaryColor : basePrimaryColor;
 });
 const currSecondaryColor = computed(() => {
@@ -347,37 +320,36 @@ const currSecondaryColor = computed(() => {
 const currAccentColor = computed(() => {
   return colorStore.accentColor ? colorStore.accentColor : baseAccentColor;
 });
-const currCtaColor = computed(() => {
-  return colorStore.ctaColor ? colorStore.ctaColor : '#F00';
-});
 
 console.log('Dynamic Primary Color: ' + currPrimaryColor);
 
 // COLORS SWITCHER- Allow choosing app colors
 import ColorSwitcher from 'components/ColorSwitcher.vue';
 
-watch(
-  () => colorStore.primaryColor,
-  (currentValue, oldValue) => {
-    setPrimaryColor(currentValue);
+watchEffect(() => {
+  if (hexReg.test(currPrimaryColor.value)) {
+    setPrimaryColor(currPrimaryColor.value);
   }
-);
-watch(
-  () => colorStore.secondaryColor,
-  (currentValue, oldValue) => {
-    setSecondaryColor(currentValue);
+});
+
+watchEffect(() => {
+  if (hexReg.test(currSecondaryColor.value)) {
+    setSecondaryColor(currSecondaryColor.value);
   }
-);
+});
 
 watchEffect(() => {
   if (hexReg.test(currAccentColor.value)) {
     setAccentColor(currAccentColor.value);
+    //onAccent.value = brightness(currAccentColor.value) > 100 ? '#000' : '#FFF';
   }
 });
 
 watchEffect(() => {
   if (hexReg.test(currCtaColor.value)) {
+    console.log('WTFFFFFFF' + currCtaColor.value);
     setCtaColor(currCtaColor.value);
+    //onCta.value = brightness(currCtaColor.value) > 100 ? '#000' : '#FFF';
   }
 });
 
@@ -535,67 +507,67 @@ watchEffect(() => {
 // TEXT COLOR
 // CTA Color
 .text-cta {
-  background-color: v-bind('ctaColor');
+  color: v-bind('ctaColor');
 }
 .text-dk5 {
-  background-color: v-bind('dk5');
+  color: v-bind('dk5');
 }
 .text-dk4 {
-  background-color: v-bind('dk4');
+  color: v-bind('dk4');
 }
 .text-dk3 {
-  background-color: v-bind('dk3');
+  color: v-bind('dk3');
 }
 .text-dk2 {
-  background-color: v-bind('dk2');
+  color: v-bind('dk2');
 }
 .text-dk1 {
-  background-color: v-bind('dk1');
+  color: v-bind('dk1');
 }
 .text-lt5 {
-  background-color: v-bind('lt5');
+  color: v-bind('lt5');
 }
 .text-lt4 {
-  background-color: v-bind('lt4');
+  color: v-bind('lt4');
 }
 .text-lt3 {
-  background-color: v-bind('lt3');
+  color: v-bind('lt3');
 }
 .text-lt2 {
-  background-color: v-bind('lt2');
+  color: v-bind('lt2');
 }
 .text-lt1 {
-  background-color: v-bind('lt1');
+  color: v-bind('lt1');
 }
 
 .text-sdk5 {
-  background-color: v-bind('sdk5');
+  color: v-bind('sdk5');
 }
 .text-sdk4 {
-  background-color: v-bind('sdk4');
+  color: v-bind('sdk4');
 }
 .text-sdk3 {
-  background-color: v-bind('sdk3');
+  color: v-bind('sdk3');
 }
 .text-sdk2 {
-  background-color: v-bind('sdk2');
+  color: v-bind('sdk2');
 }
 .text-sdk1 {
-  background-color: v-bind('sdk1');
+  color: v-bind('sdk1');
 }
 .text-slt5 {
-  background-color: v-bind('slt5');
+  color: v-bind('slt5');
 }
 .text-slt4 {
-  background-color: v-bind('slt4');
+  color: v-bind('slt4');
 }
 .text-slt3 {
-  background-color: v-bind('slt3');
+  color: v-bind('slt3');
 }
 .text-slt2 {
-  background-color: v-bind('slt2');
+  color: v-bind('slt2');
 }
 .text-slt1 {
-  background-color: v-bind('slt1');
+  color: v-bind('slt1');
 }
 </style>
