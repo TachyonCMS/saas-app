@@ -21,7 +21,7 @@ const routes: RouteRecordRaw[] = [
     path: '/privacy',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/cms/PrivacyPage.vue') }
+      { path: '', component: () => import('pages/policy/PrivacyPage.vue') }
     ],
     meta: { appDrawer: 'EntryDrawer' }
   },
@@ -30,7 +30,7 @@ const routes: RouteRecordRaw[] = [
     path: '/terms-of-service',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/cms/TermsOfServicePage.vue') }
+      { path: '', component: () => import('pages/policy/TermsOfServicePage.vue') }
     ],
     meta: { appDrawer: 'EntryDrawer' }
   },
@@ -39,7 +39,7 @@ const routes: RouteRecordRaw[] = [
     path: '/data-deletion',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/cms/DataDeletionPage.vue') }
+      { path: '', component: () => import('pages/policy/DataDeletionPage.vue') }
     ],
     meta: { appDrawer: 'EntryDrawer' }
   },
@@ -48,7 +48,7 @@ const routes: RouteRecordRaw[] = [
     path: '/crime',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/cms/CrimePage.vue') }
+      { path: '', component: () => import('pages/policy/CrimePage.vue') }
     ],
     meta: { appDrawer: 'EntryDrawer' }
   },
