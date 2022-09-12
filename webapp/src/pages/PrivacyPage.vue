@@ -1,6 +1,6 @@
 <template>
   <q-page class="row items-center justify-evenly">
-    Terms of Service
+    Privacy Policy
   </q-page>
 </template>
 
